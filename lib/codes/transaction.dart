@@ -26,5 +26,4 @@ class Transaction{
 
     category.putIfAbsent("Transfers", () => "Transfer");
   }
-
 }

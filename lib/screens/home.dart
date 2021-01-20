@@ -14,6 +14,14 @@ class Home extends StatelessWidget{
     return accountBalance;
   }
 
+  bool isEmpty(List<Transaction> tl){
+    if (tl.length == 0){
+      return true;
+    } else{
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return new Scaffold(
@@ -27,43 +35,131 @@ class Home extends StatelessWidget{
           padding: new EdgeInsets.all(16.0),
           child: new Column(
             children: <Widget>[
-              new Expanded(
+              new Card(
+                margin: EdgeInsets.all(16.0),
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
                 child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    new Column(
-                      children: <Widget>[
-                        new Row(
-                          children: <Widget>[
-                            new Text('Available')
-                          ],
-                        ),
-                        new Row(
-                          children: <Widget>[
-                            new Text('${calculateBalance()}')
-                          ],
-                        ),
-                      ],
+                    new Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text('Available'),
+                          new Text('${calculateBalance()}')
+                        ],
+                      ),
                     ),
-                    new Column(
-                      children: <Widget>[
-                        new Row(
-                          children: <Widget>[
-                            new Text('Date')
-                          ],
-                        ),
-                        new Row(
-                          children: <Widget>[
-                            new Text('${DateTime.now().month}')
-                          ],
-                        ),
-                      ],
+                    new Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text('Date'),
+                          new Text('${DateTime.now().month}')
+                        ],
+                      ),
                     ),
                   ],
                 ),
+              ),
+
+              !isEmpty(transactionList) ? new Expanded(
+                child: new ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  separatorBuilder: (BuildContext context, int index){
+                    return SizedBox(
+                      height: 10,
+                    );
+                  },
+                  itemCount: transactionList.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return new Card(
+                      margin: EdgeInsets.all(16.0),
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: new Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Container(
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: Text(
+                              '\$<Money>',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                          new Container(
+                            padding: EdgeInsets.all(15),
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Text(
+                                  '<Title>',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                new Text(
+                                  '<Date>',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
               )
+              : Column(
+                children: [
+                  Text(
+                    'No Transactions Added Yet!',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
             ],
           ),
-        )
+        ),
       )
     );
   }

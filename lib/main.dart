@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:MWallet/screens/home.dart';
+import 'package:MWallet/screens/createTransactionCategory.dart';
 
 void main(){
   runApp(new MaterialApp(
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget{
       title: 'Navigation',
       routes: <String, WidgetBuilder>{
         '/Home': (BuildContext context) => new Home(),
-        // '/Create': (BuildContext context) => new CreateNote(),
+        '/CreateTransaction': (BuildContext context) => new CreateTransaction(),
         // '/Review': (BuildContext context) => new Review(),
       },
       home: new Home(),
