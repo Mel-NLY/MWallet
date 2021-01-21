@@ -13,7 +13,7 @@ class _State extends State<CreateTransaction>{
   Widget build(BuildContext context){
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Transaction'),
+        title: new Text('Choose a category'),
       ),
       body: new Center(
         child: new SingleChildScrollView(
@@ -24,23 +24,110 @@ class _State extends State<CreateTransaction>{
                 new Row(
                   children: <Widget>[
                     new Text('Expenses'),
-                    new Row(
+                  ],
+                ),
+                new Table(
+                  children:[
+                    new TableRow(
+                      children:<Widget>[
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.commute),
+                              ),
+                              new Text('Transport'),
+                            ]
+                          ),
+                        ),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.fastfood),
+                              ),
+                              new Text('Food'),
+                            ],
+                          ),
+                        ),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.shopping_cart),
+                              ),
+                              new Text('Shopping'),
+                            ],
+                          ),
+                        ),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.attach_money),
+                              ),
+                              new Text('Bills'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    new TableRow(
                       children: <Widget>[
-                        new IconButton(
-                          icon: new Icon(Icons.directions_bus),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.airplanemode_active),
+                              ),
+                              new Text('Travel'),
+                            ],
+                          ),
                         ),
-                        new Text('Public Transport'),
-                        new IconButton(
-                          icon: new Icon(Icons.fastfood),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.trending_up),
+                              ),
+                              new Text('Investment'),
+                            ],
+                          ),
                         ),
-                        new Text('Food'),
+                        new TableCell(
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.anchor),
+                              ),
+                              new Text('Others'),
+                            ],
+                          ),
+                        ),
+                        new TableCell(
+                          child: new Container(
+                            width: 0.0,
+                            height: 0.0,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
                 new Row(
                   children: <Widget>[
-
+                    new Text('Income'),
+                  ],
+                ),
+                new Table(
+                  children:[
+                    new TableRow(
+                      children: <Widget> [
+                        new TableCell(
+                          child: null
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 new Row(
