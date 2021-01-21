@@ -9,19 +9,18 @@ class Transaction{
 
   Transaction(){
     category.putIfAbsent("Transportation", () => "Expenses");
-    category.putIfAbsent("Groceries", () => "Expenses");
     category.putIfAbsent("Food", () => "Expenses");
     category.putIfAbsent("Shopping", () => "Expenses");
-    category.putIfAbsent("Entertainment", () => "Expenses");
     category.putIfAbsent("Bills", () => "Expenses");
-    category.putIfAbsent("Education", () => "Expenses");
-    category.putIfAbsent("Investments", () => "Expenses");
-    category.putIfAbsent("Health", () => "Expenses");
     category.putIfAbsent("Travel", () => "Expenses");
+    category.putIfAbsent("Groceries", () => "Expenses");
+    category.putIfAbsent("Entertainment", () => "Expenses");
+    category.putIfAbsent("Education", () => "Expenses");
+    category.putIfAbsent("Health", () => "Expenses");
     category.putIfAbsent("Others", () => "Expenses");
 
     category.putIfAbsent("Salary", () => "Income");
-    category.putIfAbsent("Investments", () => "Income");
+    category.putIfAbsent("Awards", () => "Income");
     category.putIfAbsent("Refunds", () => "Income");
 
     category.putIfAbsent("Transfers", () => "Transfer");
