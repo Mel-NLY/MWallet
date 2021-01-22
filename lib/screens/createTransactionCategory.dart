@@ -41,7 +41,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Transport'),
                               ]
                             ),
-                            onPressed:(){selectedCategory("Transportation");},
+                            onPressed:(){selectedCategory("Transportation", Icons.commute);},
                           ),
                         ),
                         new TableCell(
@@ -54,7 +54,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Food'),
                                 ],
                               ),
-                            onPressed:(){selectedCategory("Food");},
+                            onPressed:(){selectedCategory("Food", Icons.fastfood);},
                           ),
                         ),
                         new TableCell(
@@ -67,7 +67,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Shopping'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Shopping");},
+                            onPressed:(){selectedCategory("Shopping", Icons.shopping_cart);},
                           ),
                         ),
                       ],
@@ -84,7 +84,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Bills'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Bills");},
+                            onPressed:(){selectedCategory("Bills", Icons.request_page);},
                           ),
                         ),
                         new TableCell(
@@ -97,7 +97,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Travel'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Travel");},
+                            onPressed:(){selectedCategory("Travel", Icons.airplanemode_active);},
                           ),
                         ),
                         new TableCell(
@@ -110,7 +110,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Groceries'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Groceries");},
+                            onPressed:(){selectedCategory("Groceries", Icons.trending_up);},
                           ),
                         ),
                       ],
@@ -127,7 +127,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Fun'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Entertainment");},
+                            onPressed:(){selectedCategory("Entertainment", Icons.music_video);},
                           ),
                         ),
                         new TableCell(
@@ -140,7 +140,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Education'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Education");},
+                            onPressed:(){selectedCategory("Education", Icons.school);},
                           ),
                         ),
                         new TableCell(
@@ -153,7 +153,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Health'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Health");},
+                            onPressed:(){selectedCategory("Health", Icons.local_hospital);},
                           ),
                         ),
                       ],
@@ -170,7 +170,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Others'),
                               ],
                             ),
-                            onPressed:(){selectedCategory("Others");},
+                            onPressed:(){selectedCategory("Others", Icons.attach_money);},
                           ),
                         ),
                         new TableCell(
@@ -208,7 +208,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Salary'),
                               ]
                             ),
-                            onPressed:(){selectedCategory("Salary");},
+                            onPressed:(){selectedCategory("Salary", Icons.work);},
                           ),
                         ),
                         new TableCell(
@@ -221,7 +221,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Awards'),
                               ]
                             ),
-                            onPressed:(){selectedCategory("Awards");},
+                            onPressed:(){selectedCategory("Awards", Icons.military_tech);},
                           )
                         ),
                         new TableCell(
@@ -234,29 +234,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Refund'),
                               ]
                             ),
-                          onPressed:(){selectedCategory("Refunds");},
-                          ),
-                        ),
-                      ],
-                    ),
-                    new TableRow(
-                      children: <Widget>[
-                        new TableCell(
-                          child: new Container(
-                            width: 0.0,
-                            height: 0.0,
-                          ),
-                        ),
-                        new TableCell(
-                          child: new Container(
-                            width: 0.0,
-                            height: 0.0,
-                          ),
-                        ),
-                        new TableCell(
-                          child: new Container(
-                            width: 0.0,
-                            height: 0.0,
+                          onPressed:(){selectedCategory("Refunds", Icons.replay);},
                           ),
                         ),
                       ],
@@ -282,7 +260,7 @@ class _State extends State<CreateTransaction>{
                                 new Text('Transfer'),
                               ]
                             ),
-                            onPressed:(){selectedCategory("Transfers");},
+                            onPressed:(){selectedCategory("Transfers", Icons.save_alt);},
                           ),
                         ),
                         new TableCell(
@@ -309,11 +287,11 @@ class _State extends State<CreateTransaction>{
     );
   }
 
-  void selectedCategory(String c){
+  void selectedCategory(String c, IconData i){
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CreateTransactionRecord(selectedCategory: c),
+          builder: (context) => CreateTransactionRecord(selectedCategory: c, selectedIcon: i),
         )
     );
   }
