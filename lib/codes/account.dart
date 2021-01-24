@@ -5,6 +5,6 @@ class Account{
 
   String accountType = accountTypes.elementAt(0);
   String name = "";
-  int balance = 0;
+  double balance = 0;
   List<Transaction> accTransactionList = <Transaction>[];
 }

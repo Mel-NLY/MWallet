@@ -6,8 +6,15 @@ List<Account> accountList = new List<Account>();
 List<Transaction> transactionList = new List<Transaction>();
 
 class Home extends StatelessWidget{
-  int calculateBalance(){
-    int accountBalance = 0;
+
+  double calculateBalance(){
+    Account a1 = new Account();
+    a1.accountType = "Bank Account";
+    a1.name = "DBS";
+    a1.balance = 557.79;
+    accountList.add(a1);
+
+    double accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
       accountBalance += accountList.elementAt(i).balance;
     }

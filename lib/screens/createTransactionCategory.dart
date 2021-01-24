@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/createTransactionRecord.dart';
 
 class CreateTransaction extends StatefulWidget{
@@ -8,7 +7,15 @@ class CreateTransaction extends StatefulWidget{
 }
 
 class _State extends State<CreateTransaction>{
-  Transaction _newTransaction = new Transaction();
+
+  void selectedCategory(String c, IconData i){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreateTransactionRecord(selectedCategory: c, selectedIcon: i),
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context){
@@ -35,9 +42,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.commute),
-                                ),
+                                new Icon(Icons.commute),
                                 new Text('Transport'),
                               ]
                             ),
@@ -48,12 +53,10 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.fastfood),
-                                ),
+                                new Icon(Icons.fastfood),
                                 new Text('Food'),
-                                ],
-                              ),
+                              ],
+                            ),
                             onPressed:(){selectedCategory("Food", Icons.fastfood);},
                           ),
                         ),
@@ -61,9 +64,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.shopping_cart),
-                                ),
+                                new Icon(Icons.shopping_cart),
                                 new Text('Shopping'),
                               ],
                             ),
@@ -78,9 +79,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.request_page),
-                                ),
+                                new Icon(Icons.request_page),
                                 new Text('Bills'),
                               ],
                             ),
@@ -91,9 +90,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.airplanemode_active),
-                                ),
+                                new Icon(Icons.airplanemode_active),
                                 new Text('Travel'),
                               ],
                             ),
@@ -104,9 +101,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.trending_up),
-                                ),
+                                new Icon(Icons.trending_up),
                                 new Text('Groceries'),
                               ],
                             ),
@@ -121,9 +116,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.music_video),
-                                ),
+                                new Icon(Icons.music_video),
                                 new Text('Fun'),
                               ],
                             ),
@@ -134,9 +127,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.school),
-                                ),
+                                new Icon(Icons.school),
                                 new Text('Education'),
                               ],
                             ),
@@ -147,9 +138,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.local_hospital),
-                                ),
+                                new Icon(Icons.local_hospital),
                                 new Text('Health'),
                               ],
                             ),
@@ -164,9 +153,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.attach_money),
-                                ),
+                                new Icon(Icons.attach_money),
                                 new Text('Others'),
                               ],
                             ),
@@ -202,9 +189,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.work),
-                                ),
+                                new Icon(Icons.work),
                                 new Text('Salary'),
                               ]
                             ),
@@ -215,9 +200,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.military_tech),
-                                ),
+                                new Icon(Icons.military_tech),
                                 new Text('Awards'),
                               ]
                             ),
@@ -228,9 +211,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.replay),
-                                ),
+                                new Icon(Icons.replay),
                                 new Text('Refund'),
                               ]
                             ),
@@ -254,9 +235,7 @@ class _State extends State<CreateTransaction>{
                           child: new FlatButton(
                             child: new Column(
                               children: <Widget>[
-                                new IconButton(
-                                  icon: new Icon(Icons.save_alt),
-                                ),
+                                new Icon(Icons.save_alt),
                                 new Text('Transfer'),
                               ]
                             ),
@@ -284,15 +263,6 @@ class _State extends State<CreateTransaction>{
           ),
         ),
       ),
-    );
-  }
-
-  void selectedCategory(String c, IconData i){
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CreateTransactionRecord(selectedCategory: c, selectedIcon: i),
-        )
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:MWallet/codes/account.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/transaction.dart';
-import 'package:MWallet/screens//home.dart';
+import 'package:MWallet/screens/home.dart';
 
 Transaction _newTransaction = new Transaction();
-String _chosenAccountName = "Choose";
+Account _selectedAccount = new Account();
 
 class CreateTransactionRecord extends StatelessWidget{
   //Declare a field to hold the selected category
@@ -16,70 +16,70 @@ class CreateTransactionRecord extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    final titleController = TextEditingController();
-
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Create Transaction'),
       ),
-      body: new Center(
-        child: Card(
-          child: new Container(
-            padding: new EdgeInsets.all(16.0),
-            child: new Column(
-              children:<Widget>[
-                new Row(
-                  children: <Widget>[
-                    new Column(
-                      children: <Widget>[
-                        new Icon(selectedIcon),
-                        new FlatButton(
-                          child: new Text(
-                            "Change",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.blueAccent,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          onPressed: (){Navigator.of(context).pushNamedAndRemoveUntil('/CreateTransaction', (Route<dynamic> route) => false);}
-                        )
-                      ],
-                    ),
-                    _AmtTextField()
-                  ],
-                ),
-                new Row(
-                  children: <Widget>[
-                    new Text("Wallet: "),
-                    _DropdownButton()
-                  ],
-                ),
-                _DatePicker(),
-                _TimePicker(),
-                _Notes(),
-                new RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+      body: new SingleChildScrollView(
+        child: new Center(
+          child: Card(
+            child: new Container(
+              padding: new EdgeInsets.all(16.0),
+              child: new Column(
+                children:<Widget>[
+                  new Row(
+                    children: <Widget>[
+                      new Column(
+                        children: <Widget>[
+                          new Icon(selectedIcon),
+                          new FlatButton(
+                              child: new Text(
+                                "Change",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                              onPressed: (){Navigator.of(context).pushNamedAndRemoveUntil('/CreateTransaction', (Route<dynamic> route) => false);}
+                          )
+                        ],
+                      ),
+                      _AmtTextField()
+                    ],
                   ),
-                  child: new Text('Submit'),
-                  onPressed: (){
-                    Account _chosenAccount = new Account();
-                    for (var i = 0; i < accountList.length; i++) {
-                      if (accountList[i].name == _chosenAccountName) {
-                        _chosenAccount = accountList[i];
-                        return;
-                      }
-                    }
-                    _chosenAccount.accTransactionList.add(_newTransaction);
-                    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
-                  }
-                )
-              ],
+                  _DropdownButton(),
+                  _DatePicker(),
+                  _TimePicker(),
+                  _Notes(),
+                  new Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      new RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: new Text('Submit'),
+                          onPressed: (){
+                            Account _chosenAccount = new Account();
+                            for (var i = 0; i < accountList.length; i++) {
+                              if (accountList[i].name == _selectedAccount.name) {
+                                _chosenAccount = accountList[i];
+                                return;
+                              }
+                            }
+                            _chosenAccount.accTransactionList.add(_newTransaction);
+                            Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                          }
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }
@@ -122,29 +122,47 @@ class _DropdownButton extends StatefulWidget{
   _State createState() => new _State();
 }
 class _State extends State<_DropdownButton>{
+  List<DropdownMenuItem<Account>> _dropdownMenuItems;
+
+  void initState() {
+    super.initState();
+    _dropdownMenuItems = buildDropDownMenuItems(accountList);
+    _selectedAccount = _dropdownMenuItems[0].value;
+  }
+
+  List<DropdownMenuItem<Account>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<Account>> items = List();
+    for (Account listItem in listItems) {
+      items.add(
+        new DropdownMenuItem(
+          child: new Text(listItem.name),
+          value: listItem,
+        ),
+      );
+    }
+    return items;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      value: _chosenAccountName,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24.0,
-      elevation: 16,
-      style: new TextStyle(color: Colors.blue),
-      underline: new Container(
-        height: 2,
-        color: Colors.blue
+    return Container(
+      child: new DropdownButton<Account>(
+        value: _selectedAccount,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24.0,
+        elevation: 16,
+        style: new TextStyle(color: Colors.blue),
+        underline: new Container(
+          height: 2,
+          color: Colors.blue
+        ),
+        items: _dropdownMenuItems,
+        onChanged: (value){
+          setState(() {
+            _selectedAccount.name = value.name;
+          });
+        },
       ),
-      items: accountList.map<DropdownMenuItem<String>>((Account value){
-        return DropdownMenuItem<String>(
-          value: value.name,
-          child: new Text(value.name)
-        );
-      }).toList(),
-      onChanged: (String newValue){
-        setState(() {
-          _chosenAccountName = newValue;
-        });
-      }
     );
   }
 }
