@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens//home.dart';
 
+Transaction _newTransaction = new Transaction();
+String _chosenAccountName = "Choose";
+
 class CreateTransactionRecord extends StatelessWidget{
   //Declare a field to hold the selected category
   final String selectedCategory;
@@ -14,7 +17,6 @@ class CreateTransactionRecord extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final titleController = TextEditingController();
-    final amountController = TextEditingController();
 
     return new Scaffold(
       appBar: new AppBar(
@@ -44,20 +46,7 @@ class CreateTransactionRecord extends StatelessWidget{
                         )
                       ],
                     ),
-                    new Expanded(
-                      child: new Column(
-                        children:<Widget>[
-                          new TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Amount',
-                              prefixText: '- \$',
-                            ),
-                            keyboardType: TextInputType.number,
-                            controller: amountController,
-                          ),
-                        ],
-                      ),
-                    ),
+                    _AmtTextField()
                   ],
                 ),
                 new Row(
@@ -67,11 +56,61 @@ class CreateTransactionRecord extends StatelessWidget{
                   ],
                 ),
                 _DatePicker(),
-                _TimePicker()
+                _TimePicker(),
+                _Notes(),
+                new RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: new Text('Submit'),
+                  onPressed: (){
+                    Account _chosenAccount = new Account();
+                    for (var i = 0; i < accountList.length; i++) {
+                      if (accountList[i].name == _chosenAccountName) {
+                        _chosenAccount = accountList[i];
+                        return;
+                      }
+                    }
+                    _chosenAccount.accTransactionList.add(_newTransaction);
+                    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                  }
+                )
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+//StatefulWidget for Amount
+class _AmtTextField extends StatefulWidget{
+  @override
+  _AmtTextFieldState createState() => new _AmtTextFieldState();
+}
+class _AmtTextFieldState extends State<_AmtTextField>{
+  final _amountController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return new Expanded(
+      child: new Column(
+        children:<Widget>[
+          new TextField(
+            decoration: InputDecoration(
+              labelText: 'Amount',
+              prefixText: '- \$',
+            ),
+            keyboardType: TextInputType.number,
+            controller: _amountController,
+            onChanged: (String a){
+              setState(() {
+                _newTransaction.amount = int.parse(a);
+              });
+            },
+          ),
+        ],
       ),
     );
   }
@@ -83,12 +122,10 @@ class _DropdownButton extends StatefulWidget{
   _State createState() => new _State();
 }
 class _State extends State<_DropdownButton>{
-  String dropdownValue = 'Choose';
-
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-      value: dropdownValue,
+      value: _chosenAccountName,
       icon: Icon(Icons.arrow_downward),
       iconSize: 24.0,
       elevation: 16,
@@ -105,7 +142,7 @@ class _State extends State<_DropdownButton>{
       }).toList(),
       onChanged: (String newValue){
         setState(() {
-          dropdownValue = newValue;
+          _chosenAccountName = newValue;
         });
       }
     );
@@ -132,6 +169,7 @@ class _DatePickerState extends State<_DatePicker>{
       return;
     }
     dateController.text = picked.toString();
+    _newTransaction.date = picked;
   }
 
   @override
@@ -156,7 +194,7 @@ class _DatePickerState extends State<_DatePicker>{
             child: Text(
               'Choose Date',
               style: TextStyle(
-                color: Colors.purple,
+                color: Colors.blue,
                 fontSize: 16,
               ),
             ),
@@ -185,6 +223,7 @@ class _TimePickerState extends State<_TimePicker>{
       return;
     }
     timeController.text = picked.toString();
+    _newTransaction.time = picked;
   }
 
   @override
@@ -209,13 +248,37 @@ class _TimePickerState extends State<_TimePicker>{
             child: Text(
               'Choose Date',
               style: TextStyle(
-                color: Colors.purple,
+                color: Colors.blue,
                 fontSize: 16,
               ),
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+//StatefulWidget for Notes
+class _Notes extends StatefulWidget{
+  @override
+  _NotesState createState() => _NotesState();
+}
+class _NotesState extends State<_Notes>{
+  final _notesController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return new TextField(
+      controller: _notesController,
+      maxLines: 1,
+      autocorrect: true,
+      onChanged: (String t){
+        setState(() {
+          _newTransaction.note = t;
+        });
+      },
+      decoration: new InputDecoration(labelText: "Notes (Optional)"),
     );
   }
 }
