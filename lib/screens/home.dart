@@ -1,6 +1,7 @@
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:flutter/material.dart';
+import 'package:MWallet/screens/accounts.dart';
 import 'package:intl/intl.dart';
 
 List<Account> accountList = new List<Account>();
@@ -77,7 +78,7 @@ class Home extends StatelessWidget{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Text('Date'),
-                          new Text('${DateFormat('MMMM').format(DateTime.now())}')
+                          new Text('${DateFormat('MMMM yyyy').format(DateTime.now())}')
                         ],
                       ),
                     ),
@@ -171,7 +172,47 @@ class Home extends StatelessWidget{
             ],
           ),
         ),
-      )
+      ),
+      bottomNavigationBar: BottomNavBar(),
+    );
+  }
+}
+
+//StatefulWidget for Bottom Navigation Bar
+class BottomNavBar extends StatefulWidget{
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+class _BottomNavBarState extends State<BottomNavBar>{
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
+    Home(),
+    Accounts(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return new BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.business),
+          label: 'Accounts',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,
     );
   }
 }
