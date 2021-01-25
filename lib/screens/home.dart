@@ -1,6 +1,7 @@
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 List<Account> accountList = new List<Account>();
 List<Transaction> transactionList = new List<Transaction>();
@@ -9,14 +10,17 @@ class Home extends StatelessWidget{
 
   double calculateBalance(){
     Account a1 = new Account();
-    a1.accountType = "Bank Account";
     a1.name = "DBS";
-    a1.balance = 557.79;
+    a1.balance = 800;
     accountList.add(a1);
 
     double accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
       accountBalance += accountList.elementAt(i).balance;
+      for(int j = 0; j < accountList[i].accTransactionList.length; j++){
+        transactionList.add(accountList[i].accTransactionList.elementAt(i));
+        accountBalance -= accountList[i].accTransactionList.elementAt(i).amount;
+      }
     }
     return accountBalance;
   }
@@ -73,7 +77,7 @@ class Home extends StatelessWidget{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Text('Date'),
-                          new Text('${DateTime.now().month}')
+                          new Text('${DateFormat('MMMM').format(DateTime.now())}')
                         ],
                       ),
                     ),
@@ -116,7 +120,7 @@ class Home extends StatelessWidget{
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: Text(
-                              '\$<Money>',
+                              '\$${transactionList[index].amount}',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -130,14 +134,14 @@ class Home extends StatelessWidget{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 new Text(
-                                  '<Title>',
+                                  '${transactionList[index].category}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 new Text(
-                                  '<Date>',
+                                  '${transactionList[index].date}',
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),

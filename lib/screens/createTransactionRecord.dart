@@ -2,6 +2,7 @@ import 'package:MWallet/codes/account.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/home.dart';
+import 'package:intl/intl.dart';
 
 Transaction _newTransaction = new Transaction();
 Account _selectedAccount = new Account();
@@ -52,27 +53,27 @@ class CreateTransactionRecord extends StatelessWidget{
                   _DatePicker(),
                   _TimePicker(),
                   _Notes(),
-                  new Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      new RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: new Text('Submit'),
-                          onPressed: (){
-                            Account _chosenAccount = new Account();
-                            for (var i = 0; i < accountList.length; i++) {
-                              if (accountList[i].name == _selectedAccount.name) {
-                                _chosenAccount = accountList[i];
-                                return;
-                              }
-                            }
-                            _chosenAccount.accTransactionList.add(_newTransaction);
-                            Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                  new Align(
+                    alignment: Alignment.bottomRight,
+                    child: new RaisedButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: new Text('Submit'),
+                      onPressed: (){
+                        Account _chosenAccount = new Account();
+                        for (var i = 0; i < accountList.length; i++) {
+                          if (accountList[i].name == _selectedAccount.name) {
+                            _chosenAccount = accountList[i];
+                            break;
                           }
-                      )
-                    ],
+                        }
+                        _chosenAccount.accTransactionList.add(_newTransaction);
+                        Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                      }
+                    )
                   )
                 ],
               ),
@@ -186,7 +187,7 @@ class _DatePickerState extends State<_DatePicker>{
     if (picked == null) {
       return;
     }
-    dateController.text = picked.toString();
+    dateController.text = DateFormat("dd-MM-yyyy").format(picked);
     _newTransaction.date = picked;
   }
 
@@ -199,19 +200,19 @@ class _DatePickerState extends State<_DatePicker>{
       ),
       child: Row(
         children: [
-          Expanded(
-            child: TextField(
+          new Expanded(
+            child: new TextField(
               readOnly: true,
               controller: dateController,
-              decoration: InputDecoration(labelText: 'Date'),
+              decoration: new InputDecoration(labelText: 'Date'),
               enabled: false,
             ),
           ),
-          FlatButton(
+          new FlatButton(
             onPressed: (){_selectDate(context);},
-            child: Text(
+            child: new Text(
               'Choose Date',
-              style: TextStyle(
+              style: new TextStyle(
                 color: Colors.blue,
                 fontSize: 16,
               ),
@@ -240,7 +241,7 @@ class _TimePickerState extends State<_TimePicker>{
     if (picked == null) {
       return;
     }
-    timeController.text = picked.toString();
+    timeController.text = "${picked.hour}:${picked.minute}";
     _newTransaction.time = picked;
   }
 
