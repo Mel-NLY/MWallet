@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:MWallet/screens/home.dart';
 
 class Accounts extends StatelessWidget{
   @override
@@ -10,7 +9,7 @@ class Accounts extends StatelessWidget{
           padding: new EdgeInsets.all(16.0),
           child: new Column(
             children: <Widget>[
-              new Text("Hello")
+
             ]
           )
         )

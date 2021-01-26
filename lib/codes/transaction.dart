@@ -5,24 +5,29 @@ class Transaction{
   DateTime date = new DateTime.now();
   TimeOfDay time = new TimeOfDay.now();
   String note = "";
-  Map<String, String> category = new Map<String, String>();
+  static List<Category> categoryTypes = <Category>[
+    new Category("Transportation", "Expenses"),
+    new Category("Food", "Expenses"),
+    new Category("Shopping", "Expenses"),
+    new Category("Bills", "Expenses"),
+    new Category("Travel", "Expenses"),
+    new Category("Groceries", "Expenses"),
+    new Category("Entertainment", "Expenses"),
+    new Category("Education", "Expenses"),
+    new Category("Health", "Expenses"),
+    new Category("Others", "Expenses"),
+    new Category("Salary", "Income"),
+    new Category("Awards", "Income"),
+    new Category("Refunds", "Income"),
+    new Category("Transfers", "Transfer"),
+  ];
 
-  Transaction(){
-    category.putIfAbsent("Transportation", () => "Expenses");
-    category.putIfAbsent("Food", () => "Expenses");
-    category.putIfAbsent("Shopping", () => "Expenses");
-    category.putIfAbsent("Bills", () => "Expenses");
-    category.putIfAbsent("Travel", () => "Expenses");
-    category.putIfAbsent("Groceries", () => "Expenses");
-    category.putIfAbsent("Entertainment", () => "Expenses");
-    category.putIfAbsent("Education", () => "Expenses");
-    category.putIfAbsent("Health", () => "Expenses");
-    category.putIfAbsent("Others", () => "Expenses");
+  Category categoryType = categoryTypes.elementAt(0);
+}
 
-    category.putIfAbsent("Salary", () => "Income");
-    category.putIfAbsent("Awards", () => "Income");
-    category.putIfAbsent("Refunds", () => "Income");
+class Category{
+  String name = "";
+  String category = "";
 
-    category.putIfAbsent("Transfers", () => "Transfer");
-  }
+  Category(this.name, this.category);
 }

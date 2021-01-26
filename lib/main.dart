@@ -61,8 +61,10 @@ class _BottomNavBarState extends State<_BottomNavBar> {
               label: 'Accounts',
             ),
           ],
+          backgroundColor: Colors.blue,
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.white,
           onTap: _onItemTapped,
         )
     );

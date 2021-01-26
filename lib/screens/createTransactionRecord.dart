@@ -70,7 +70,16 @@ class CreateTransactionRecord extends StatelessWidget{
                             break;
                           }
                         }
+                        for (var i = 0; i < Transaction.categoryTypes.length; i++) {
+                          if (Transaction.categoryTypes[i].name == selectedCategory) {
+                            _newTransaction.categoryType = Transaction.categoryTypes[i];
+                            break;
+                          }
+                        }
+                        
                         _chosenAccount.accTransactionList.add(_newTransaction);
+                        _chosenAccount.balance -= _newTransaction.amount;
+                        transactionList.add(_newTransaction);
                         Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                       }
                     )
@@ -265,7 +274,7 @@ class _TimePickerState extends State<_TimePicker>{
           FlatButton(
             onPressed: (){_selectTime(context);},
             child: Text(
-              'Choose Date',
+              'Choose Time',
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 16,

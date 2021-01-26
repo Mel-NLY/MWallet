@@ -18,10 +18,6 @@ class Home extends StatelessWidget{
     double accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
       accountBalance += accountList.elementAt(i).balance;
-      for(int j = 0; j < accountList[i].accTransactionList.length; j++){
-        transactionList.add(accountList[i].accTransactionList.elementAt(i));
-        accountBalance -= accountList[i].accTransactionList.elementAt(i).amount;
-      }
     }
     return accountBalance;
   }
@@ -135,7 +131,7 @@ class Home extends StatelessWidget{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 new Text(
-                                  '${transactionList[index].category}',
+                                  '${transactionList[index].categoryType.name}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
