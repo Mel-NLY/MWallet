@@ -15,7 +15,6 @@ class Accounts extends StatelessWidget{
           )
         )
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
