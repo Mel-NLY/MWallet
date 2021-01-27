@@ -1,7 +1,6 @@
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:flutter/material.dart';
-import 'package:MWallet/screens/accounts.dart';
 import 'package:intl/intl.dart';
 
 List<Account> accountList = new List<Account>();
@@ -83,15 +82,10 @@ class Home extends StatelessWidget{
               ),
 
               !isEmpty(transactionList) ? new Expanded(
-                child: new ListView.separated(
+                child: new ListView.builder(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  separatorBuilder: (BuildContext context, int index){
-                    return SizedBox(
-                      height: 10,
-                    );
-                  },
                   itemCount: transactionList.length,
                   itemBuilder: (BuildContext context, int index){
                     return new Card(
@@ -117,7 +111,7 @@ class Home extends StatelessWidget{
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: Text(
-                              '\$${transactionList[index].amount}',
+                              '\$${transactionList[index].amount.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -138,7 +132,7 @@ class Home extends StatelessWidget{
                                   ),
                                 ),
                                 new Text(
-                                  '${transactionList[index].date}',
+                                  '${transactionList[index].note}',
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),

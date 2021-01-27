@@ -27,7 +27,7 @@ class CreateTransactionRecord extends StatelessWidget{
             child: new Container(
               padding: new EdgeInsets.all(16.0),
               child: new Column(
-                children:<Widget>[
+                children:[
                   new Row(
                     children: <Widget>[
                       new Column(
@@ -76,14 +76,18 @@ class CreateTransactionRecord extends StatelessWidget{
                             break;
                           }
                         }
-                        
+
                         _chosenAccount.accTransactionList.add(_newTransaction);
                         _chosenAccount.balance -= _newTransaction.amount;
-                        transactionList.add(_newTransaction);
+                        setState(() {
+                          transactionList.add(_newTransaction);
+                        });
+                        print(_newTransaction.categoryType.name);
                         Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                       }
                     )
-                  )
+                  );
+                  _Submit(selectedCategory: selectedCategory)
                 ],
               ),
             ),
@@ -308,5 +312,16 @@ class _NotesState extends State<_Notes>{
       },
       decoration: new InputDecoration(labelText: "Notes (Optional)"),
     );
+  }
+}
+
+class _Submit extends StatefulWidget{
+  @override
+  _SubmitState createState() => _SubmitState();
+}
+class _SubmitState extends State<_Submit>{
+  @override
+  Widget build(BuildContext context) {
+    return
   }
 }
