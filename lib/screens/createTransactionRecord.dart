@@ -4,16 +4,27 @@ import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:intl/intl.dart';
 
-Transaction _newTransaction = new Transaction();
-Account _selectedAccount = new Account();
+Transaction _newTransaction;
+Account _selectedAccount;
 
-class CreateTransactionRecord extends StatelessWidget{
+class CreateTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
   final String selectedCategory;
   final IconData selectedIcon;
 
   //In the constructor we require a String
-  CreateTransactionRecord({Key key, @required this.selectedCategory, @required this.selectedIcon}) : super(key: key);
+  CreateTransactionRecord({@required this.selectedCategory, @required this.selectedIcon});
+
+  @override
+  _CreateTransactionRecordState createState() => _CreateTransactionRecordState();
+}
+
+class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
+  @override
+  void initState() {
+    _newTransaction = new Transaction();
+    _selectedAccount = new Account();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -23,7 +34,7 @@ class CreateTransactionRecord extends StatelessWidget{
       ),
       body: new SingleChildScrollView(
         child: new Center(
-          child: Card(
+          child: new Card(
             child: new Container(
               padding: new EdgeInsets.all(16.0),
               child: new Column(
@@ -32,7 +43,7 @@ class CreateTransactionRecord extends StatelessWidget{
                     children: <Widget>[
                       new Column(
                         children: <Widget>[
-                          new Icon(selectedIcon),
+                          new Icon(widget.selectedIcon),
                           new FlatButton(
                               child: new Text(
                                 "Change",
@@ -71,23 +82,22 @@ class CreateTransactionRecord extends StatelessWidget{
                           }
                         }
                         for (var i = 0; i < Transaction.categoryTypes.length; i++) {
-                          if (Transaction.categoryTypes[i].name == selectedCategory) {
+                          if (Transaction.categoryTypes[i].name == widget.selectedCategory) {
                             _newTransaction.categoryType = Transaction.categoryTypes[i];
                             break;
                           }
                         }
-
                         _chosenAccount.accTransactionList.add(_newTransaction);
                         _chosenAccount.balance -= _newTransaction.amount;
+
                         setState(() {
                           transactionList.add(_newTransaction);
                         });
-                        print(_newTransaction.categoryType.name);
+
                         Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                       }
                     )
-                  );
-                  _Submit(selectedCategory: selectedCategory)
+                  )
                 ],
               ),
             ),
@@ -315,13 +325,3 @@ class _NotesState extends State<_Notes>{
   }
 }
 
-class _Submit extends StatefulWidget{
-  @override
-  _SubmitState createState() => _SubmitState();
-}
-class _SubmitState extends State<_Submit>{
-  @override
-  Widget build(BuildContext context) {
-    return
-  }
-}

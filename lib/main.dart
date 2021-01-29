@@ -1,7 +1,12 @@
+import 'package:MWallet/screens/createAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
+
+//Improvements
+//- Make sure all variables are private unless otherwise is needed
+//- Efficiency
 
 void main(){
   runApp(new MaterialApp(
@@ -15,21 +20,21 @@ class MyApp extends StatelessWidget{
     return new MaterialApp(
       title: 'Navigation',
       routes: <String, WidgetBuilder>{
-        '/Home': (BuildContext context) => new Home(),
+        '/Home': (BuildContext context) => new BottomNavBar(),
         '/CreateTransaction': (BuildContext context) => new CreateTransaction(),
-        // '/Review': (BuildContext context) => new Review(),
+        '/CreateAccount': (BuildContext context) => new CreateAccount(),
       },
-      home: new _BottomNavBar(),
+      home: new BottomNavBar(),
     );
   }
 }
 
 //StatefulWidget for Bottom Navigation Bar
-class _BottomNavBar extends StatefulWidget{
+class BottomNavBar extends StatefulWidget{
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
-class _BottomNavBarState extends State<_BottomNavBar> {
+class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold);

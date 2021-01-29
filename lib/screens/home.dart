@@ -6,6 +6,14 @@ import 'package:intl/intl.dart';
 List<Account> accountList = new List<Account>();
 List<Transaction> transactionList = new List<Transaction>();
 
+bool isEmpty(List<dynamic> tl){
+  if (tl.length == 0){
+    return true;
+  } else{
+    return false;
+  }
+}
+
 class Home extends StatelessWidget{
 
   double calculateBalance(){
@@ -19,14 +27,6 @@ class Home extends StatelessWidget{
       accountBalance += accountList.elementAt(i).balance;
     }
     return accountBalance;
-  }
-
-  bool isEmpty(List<Transaction> tl){
-    if (tl.length == 0){
-      return true;
-    } else{
-      return false;
-    }
   }
 
   @override
