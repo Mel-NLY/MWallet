@@ -221,7 +221,7 @@ class _DatePickerState extends State<_DatePicker>{
         top: 10,
         bottom: 30,
       ),
-      child: Row(
+      child: new Row(
         children: [
           new Expanded(
             child: new TextField(

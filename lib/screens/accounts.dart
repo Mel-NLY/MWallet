@@ -11,11 +11,9 @@ class Accounts extends StatelessWidget{
           child: new Column(
             children: <Widget>[
               !isEmpty(accountList) ? new Expanded(
-                  child: new ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: transactionList.length,
+                  child: new GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                    itemCount: accountList.length,
                     itemBuilder: (BuildContext context, int index){
                       return new Card(
                         margin: EdgeInsets.all(16.0),
@@ -27,29 +25,43 @@ class Accounts extends StatelessWidget{
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             new Container(
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
-                              ),
-                              child: Text(
-                                '\$${accountList[index].name}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
                                 ),
-                              ),
+                                child: new Column(
+                                  children: <Widget>[
+                                    new Text(
+                                      '${accountList[index].name}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                    new Text(
+                                      '${accountList[index].accountType}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                )
                             ),
                             new Container(
-                              padding: EdgeInsets.all(15),
-                              child: new Text(
-                                '${accountList[index].balance}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
                                 ),
-                              )
+                                child: new Text(
+                                  '${accountList[index].balance.toStringAsFixed(2)} SGD',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
                             ),
                           ],
                         ),

@@ -1,5 +1,6 @@
 import 'package:MWallet/screens/createAccount.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
@@ -9,9 +10,11 @@ import 'package:MWallet/screens/createTransactionCategory.dart';
 //- Efficiency
 
 void main(){
-  runApp(new MaterialApp(
-    home: new MyApp(),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(new MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget{
@@ -24,6 +27,20 @@ class MyApp extends StatelessWidget{
         '/CreateTransaction': (BuildContext context) => new CreateTransaction(),
         '/CreateAccount': (BuildContext context) => new CreateAccount(),
       },
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        accentColor: Colors.amber,
+        fontFamily: 'Poppins',
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
       home: new BottomNavBar(),
     );
   }

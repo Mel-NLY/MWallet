@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
+import 'package:MWallet/screens/home.dart';
 
 Account _newAccount;
 
@@ -23,16 +24,29 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
       body: new SingleChildScrollView(
         child: new Center(
-          child: new Card(
-            child: new Container(
-              padding: new EdgeInsets.all(16.0),
-              child: new Column(
-                children: <Widget>[
-                  _AccountNameField(),
-                  //_AccountBalanceField()
-                ],
-              ),
-            ),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              _AccountNameField(),
+              _AccountBalanceField(),
+              _AccountTypeDropdown(),
+              new Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: new RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0.0),
+                      side: BorderSide(color: Colors.black)),
+                  padding: EdgeInsets.all(10.0),
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  child: new Text("Add the account!"),
+                  onPressed: (){
+                    accountList.add(_newAccount);
+                    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                  },
+                ),
+              )
+            ],
           ),
         ),
       )
@@ -51,6 +65,7 @@ class _AccountNameFieldState extends State<_AccountNameField>{
   Widget build(BuildContext context) {
     return new Container(
       width: MediaQuery.of(context).size.width * 1,
+      padding: new EdgeInsets.all(32.0),
       decoration: BoxDecoration(
           color: Colors.blueAccent
       ),
@@ -76,21 +91,58 @@ class _AccountBalanceFieldState extends State<_AccountBalanceField>{
 
   @override
   Widget build(BuildContext context) {
-    return new Expanded(
-      child: new Row(
-          children: [
-            new Icon(Icons.edit),
-            new TextField(
-              keyboardType: TextInputType.number,
-              controller: _accountBalanceController,
-              onChanged: (String bal){
-                setState(() {
-                  _newAccount.balance = double.parse(bal);
-                });
-              },
-            )
-         ],
-      )
+    return new TextField(
+      decoration: new InputDecoration(labelText: "Account Balance", icon: Icon(Icons.edit)),
+      keyboardType: TextInputType.number,
+      controller: _accountBalanceController,
+      onChanged: (String bal){
+        setState(() {
+          _newAccount.balance = double.parse(bal);
+        });
+      },
+    );
+  }
+}
+
+class _AccountTypeDropdown extends StatefulWidget{
+  @override
+  _AccountTypeDropdownState createState() => new _AccountTypeDropdownState();
+}
+class _AccountTypeDropdownState extends State<_AccountTypeDropdown>{
+
+  List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String listItem in listItems) {
+      items.add(
+        new DropdownMenuItem(
+          child: new Text(listItem),
+          value: listItem,
+        ),
+      );
+    }
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: new DropdownButton<String>(
+        value: _newAccount.accountType,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24.0,
+        elevation: 16,
+        style: new TextStyle(color: Colors.blue),
+        underline: new Container(
+            height: 2,
+            color: Colors.blue
+        ),
+        items: buildDropDownMenuItems(Account.accountTypes),
+        onChanged: (value){
+          setState(() {
+            _newAccount.accountType = value;
+          });
+        },
+      ),
     );
   }
 }
