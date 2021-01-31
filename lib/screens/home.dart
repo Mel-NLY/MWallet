@@ -89,17 +89,17 @@ class Home extends StatelessWidget{
                   itemCount: transactionList.length,
                   itemBuilder: (BuildContext context, int index){
                     return new Card(
-                      margin: EdgeInsets.all(16.0),
+                      margin: new EdgeInsets.all(5.0),
                       elevation: 8,
-                      shape: RoundedRectangleBorder(
+                      shape: new RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
                       child: new Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Container(
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.symmetric(
+                            padding: new EdgeInsets.all(10),
+                            margin: new EdgeInsets.symmetric(
                               horizontal: 10,
                               vertical: 10,
                             ),
@@ -110,7 +110,7 @@ class Home extends StatelessWidget{
                               ),
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            child: Text(
+                            child: new Text(
                               '\$${transactionList[index].amount.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 15,
@@ -120,7 +120,7 @@ class Home extends StatelessWidget{
                             ),
                           ),
                           new Container(
-                            padding: EdgeInsets.all(15),
+                            padding: new EdgeInsets.all(15),
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -146,15 +146,15 @@ class Home extends StatelessWidget{
                   },
                 )
               )
-              : Column(
+              : new Column(
                 children: [
-                  Text(
+                  new Text(
                     'No Transactions Added Yet!',
-                    style: TextStyle(
+                    style: new TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  new SizedBox(
                     height: 20,
                   ),
                 ],

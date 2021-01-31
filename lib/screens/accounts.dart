@@ -16,54 +16,45 @@ class Accounts extends StatelessWidget{
                     itemCount: accountList.length,
                     itemBuilder: (BuildContext context, int index){
                       return new Card(
-                        margin: EdgeInsets.all(16.0),
+                        color: accountList[index].accountType == "Cash" ? Colors.lightBlue : accountList[index].accountType == "Bank Account" ? Colors.blueAccent : accountList[index].accountType == "Debit Card" ? Colors.blueGrey : Colors.green,
+                        margin: EdgeInsets.all(10.0),
                         elevation: 8,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: new Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Container(
-                                padding: EdgeInsets.all(10),
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
+                        child: new Container(
+                          padding: EdgeInsets.all(10),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                '${accountList[index].name}',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Text(
-                                      '${accountList[index].name}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                    new Text(
-                                      '${accountList[index].accountType}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            ),
-                            new Container(
-                                padding: EdgeInsets.all(10),
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
+                              ),
+                              new Text(
+                                '${accountList[index].accountType}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
                                 ),
-                                child: new Text(
-                                  '${accountList[index].balance.toStringAsFixed(2)} SGD',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                            ),
-                          ],
+                              ),
+                              new SizedBox(
+                                  height: 20
+                              ),
+                              new Text(
+                                '${accountList[index].balance.toStringAsFixed(2)} SGD',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -77,7 +68,7 @@ class Accounts extends StatelessWidget{
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  new SizedBox(
                     height: 20,
                   ),
                 ],

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
+import 'package:MWallet/theme.dart';
 
 //Improvements
 //- Make sure all variables are private unless otherwise is needed
@@ -27,20 +28,7 @@ class MyApp extends StatelessWidget{
         '/CreateTransaction': (BuildContext context) => new CreateTransaction(),
         '/CreateAccount': (BuildContext context) => new CreateAccount(),
       },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.amber,
-        fontFamily: 'Poppins',
-        appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ),
+      theme: myTheme,
       home: new BottomNavBar(),
     );
   }
@@ -53,8 +41,7 @@ class BottomNavBar extends StatefulWidget{
 }
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<dynamic> _widgetOptions = <dynamic>[
     Home(),
     Accounts(),
@@ -69,26 +56,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: new Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: new BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Accounts',
-            ),
-          ],
-          backgroundColor: Colors.blue,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.white,
-          onTap: _onItemTapped,
-        )
+      body: new Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Accounts',
+          ),
+        ],
+        backgroundColor: Colors.white,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).unselectedWidgetColor,
+        onTap: _onItemTapped,
+      )
     );
   }
 }

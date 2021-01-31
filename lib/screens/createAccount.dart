@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:MWallet/screens/home.dart';
+import 'package:MWallet/theme.dart';
 
 Account _newAccount;
 
@@ -21,6 +22,7 @@ class _CreateAccountState extends State<CreateAccount>{
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Create Account"),
+        backgroundColor: Theme.of(context).backgroundColor,
       ),
       body: new SingleChildScrollView(
         child: new Center(
@@ -28,23 +30,30 @@ class _CreateAccountState extends State<CreateAccount>{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               _AccountNameField(),
-              _AccountBalanceField(),
-              _AccountTypeDropdown(),
               new Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: new RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                      side: BorderSide(color: Colors.black)),
-                  padding: EdgeInsets.all(10.0),
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  child: new Text("Add the account!"),
-                  onPressed: (){
-                    accountList.add(_newAccount);
-                    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
-                  },
-                ),
+                padding : new EdgeInsets.all(16.0),
+                child: new Column(
+                  children: <Widget>[
+                    _AccountBalanceField(),
+                    _AccountTypeDropdown(),
+                    new Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: new RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            side: BorderSide(color: Colors.black)),
+                        padding: EdgeInsets.all(10.0),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        child: new Text("Add the account!"),
+                        onPressed: (){
+                          accountList.add(_newAccount);
+                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                        },
+                      ),
+                    )
+                  ]
+                )
               )
             ],
           ),
