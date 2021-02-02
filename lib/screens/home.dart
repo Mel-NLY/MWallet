@@ -15,41 +15,52 @@ bool isEmpty(List<dynamic> tl){
 }
 
 class Home extends StatelessWidget{
-
   double calculateBalance(){
-    double accountBalance = 0;
-    for(int i = 0; i < accountList.length; i++){
-      accountBalance += accountList.elementAt(i).balance;
+    double transactionBalance = 0;
+    for(int i = 0; i < transactionList.length; i++){
+      transactionBalance += transactionList.elementAt(i).amount;
     }
-    return accountBalance;
+    return transactionBalance;
   }
+
 
   @override
   Widget build(BuildContext context){
     return new Scaffold(
       body: new Center(
         child: new Container(
-          padding: EdgeInsets.only(top: 50.0),
+          padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
           child: new Column(
             children: <Widget>[
               new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
+                  new Text('-\$', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                  new Text('${calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 45)),
+                ]
+              ),
+              new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )
+                      ),
                     ),
-                    child: new Text('\$${calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25))
-                  ),
-                  new Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
+                    new Text('${DateFormat('MMMM yyyy').format(DateTime.now()).toUpperCase()}', style: new TextStyle(color: Colors.black,fontSize: 14)),
+                    new Expanded(
+                      child: new Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )
+                      ),
                     ),
-                    child: new Text('${DateFormat('MMM yyyy').format(DateTime.now()).toUpperCase()}', style: new TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 18))
-                  ),
-                ],
+                  ]
               ),
               !isEmpty(transactionList) ? new Expanded(
                 child: new ListView.builder(
@@ -60,9 +71,9 @@ class Home extends StatelessWidget{
                   itemBuilder: (BuildContext context, int index){
                     return new Card(
                       margin: new EdgeInsets.all(5.0),
-                      elevation: 8,
                       shape: new RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
+                        side: BorderSide(color: Color.fromRGBO(240, 240, 240, 1.0))
                       ),
                       child: new Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +87,7 @@ class Home extends StatelessWidget{
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Theme.of(context).primaryColor,
-                                width: 2,
+                                width: 1.5,
                               ),
                               borderRadius: BorderRadius.circular(18),
                             ),
@@ -97,7 +108,7 @@ class Home extends StatelessWidget{
                                 new Text(
                                   '${transactionList[index].categoryType.name}',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -118,10 +129,13 @@ class Home extends StatelessWidget{
               )
               : new Column(
                 children: [
+                  new SizedBox(
+                    height: 20,
+                  ),
                   new Text(
                     'No Transactions Added Yet!',
                     style: new TextStyle(
-                      fontSize: 20,
+                      fontSize: 15,
                     ),
                   ),
                   new SizedBox(
