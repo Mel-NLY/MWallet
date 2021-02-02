@@ -1,6 +1,7 @@
 //Credits to https://github.com/rxlabz/panache
 import 'package:flutter/material.dart';
 final ThemeData myTheme = ThemeData(
+  fontFamily: 'Sora',
   primarySwatch: MaterialColor(4280380403,{50: Color( 0xffe7effe )
   , 100: Color( 0xffcfdffc )
   , 200: Color( 0xff9ebefa )

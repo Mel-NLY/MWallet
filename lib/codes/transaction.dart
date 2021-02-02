@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Transaction{
-  int amount = 0;
+  double amount = 0;
   DateTime date = new DateTime.now();
   TimeOfDay time = new TimeOfDay.now();
   String note = "";

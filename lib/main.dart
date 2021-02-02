@@ -59,6 +59,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: new Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        onPressed: (){Navigator.of(context).pushNamed('/CreateTransaction');},
+        child: Icon(Icons.add),
+      ),
       bottomNavigationBar: new BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

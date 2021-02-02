@@ -38,7 +38,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
             child: new Container(
               padding: new EdgeInsets.all(16.0),
               child: new Column(
-                children:[
+                children: <Widget>[
                   new Row(
                     children: <Widget>[
                       new Column(
@@ -130,7 +130,7 @@ class _AmtTextFieldState extends State<_AmtTextField>{
             controller: _amountController,
             onChanged: (String a){
               setState(() {
-                _newTransaction.amount = int.parse(a);
+                _newTransaction.amount = double.parse(a);
               });
             },
           ),

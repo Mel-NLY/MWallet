@@ -17,11 +17,6 @@ bool isEmpty(List<dynamic> tl){
 class Home extends StatelessWidget{
 
   double calculateBalance(){
-    Account a1 = new Account();
-    a1.name = "DBS";
-    a1.balance = 800;
-    accountList.add(a1);
-
     double accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
       accountBalance += accountList.elementAt(i).balance;
@@ -32,55 +27,30 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return new Scaffold(
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.add),
-          backgroundColor: Colors.blue,
-          onPressed: (){Navigator.of(context).pushNamed('/CreateTransaction');},
-      ),
       body: new Center(
         child: new Container(
-          padding: new EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(top: 50.0),
           child: new Column(
             children: <Widget>[
-              new Card(
-                margin: EdgeInsets.all(16.0),
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    new Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text('Available'),
-                          new Text('${calculateBalance()}')
-                        ],
-                      ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  new Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
                     ),
-                    new Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text('Date'),
-                          new Text('${DateFormat('MMMM yyyy').format(DateTime.now())}')
-                        ],
-                      ),
+                    child: new Text('\$${calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25))
+                  ),
+                  new Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
                     ),
-                  ],
-                ),
+                    child: new Text('${DateFormat('MMM yyyy').format(DateTime.now()).toUpperCase()}', style: new TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 18))
+                  ),
+                ],
               ),
-
               !isEmpty(transactionList) ? new Expanded(
                 child: new ListView.builder(
                   physics: BouncingScrollPhysics(),
