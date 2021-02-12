@@ -1,5 +1,6 @@
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/codes/account.dart';
+import 'package:MWallet/screens/editTransactionRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -75,53 +76,65 @@ class Home extends StatelessWidget{
                         borderRadius: BorderRadius.circular(18),
                         side: BorderSide(color: Color.fromRGBO(240, 240, 240, 1.0))
                       ),
-                      child: new Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Container(
-                            padding: new EdgeInsets.all(10),
-                            margin: new EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.5,
-                              ),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: new Text(
-                              '\$${transactionList[index].amount.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                          new Container(
-                            padding: new EdgeInsets.all(15),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Text(
-                                  '${transactionList[index].categoryType.name}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      child: new InkWell(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditTransactionRecord(selectedTransaction: transactionList[index]),
+                              )
+                          );
+                        },
+                        child: new Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            new Container(
+                              padding: new EdgeInsets.all(13),
+                              margin: new EdgeInsets.all(13),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 1.5,
                                 ),
-                                new Text(
-                                  '${transactionList[index].note}',
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                  ),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: new Text(
+                                '\$${transactionList[index].amount.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
+                            new Container(
+                              padding: new EdgeInsets.all(18),
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  new Text(
+                                    '${transactionList[index].categoryType.name}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  new Text(
+                                    '${transactionList[index].note}',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            new Spacer(),
+                            new Container(
+                              padding: new EdgeInsets.all(15),
+                              child: new Icon(Icons.keyboard_arrow_right, size: 40, color: Colors.grey,),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
