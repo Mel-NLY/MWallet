@@ -4,13 +4,14 @@ import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:intl/intl.dart';
 
-Transaction selectedTransaction;
 Account _selectedAccount;
 
 class EditTransactionRecord extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
 
   //In the constructor we require a String
-  EditTransactionRecord({@required selectedTransaction});
+  EditTransactionRecord({@required this.selectedTransaction});
 
   @override
   _EditTransactionRecordState createState() => _EditTransactionRecordState();
@@ -20,6 +21,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
   @override
   void initState() {
     _selectedAccount = new Account();
+    print(widget.selectedTransaction.categoryType.name);
   }
 
   @override
@@ -40,20 +42,20 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                         new Column(
                           children: <Widget>[
                             new Icon(
-                              selectedTransaction.categoryType.name == "Transportation" ? Icons.commute :
-                              selectedTransaction.categoryType.name == "Food" ? Icons.fastfood :
-                              selectedTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
-                              selectedTransaction.categoryType.name == "Bills" ? Icons.request_page :
-                              selectedTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
-                              selectedTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
-                              selectedTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
-                              selectedTransaction.categoryType.name == "Education" ? Icons.school :
-                              selectedTransaction.categoryType.name == "Health" ? Icons.local_hospital :
-                              selectedTransaction.categoryType.name == "Others" ? Icons.attach_money :
+                              widget.selectedTransaction.categoryType.name == "Transportation" ? Icons.commute :
+                              widget.selectedTransaction.categoryType.name == "Food" ? Icons.fastfood :
+                              widget.selectedTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
+                              widget.selectedTransaction.categoryType.name == "Bills" ? Icons.request_page :
+                              widget.selectedTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
+                              widget.selectedTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
+                              widget.selectedTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
+                              widget.selectedTransaction.categoryType.name == "Education" ? Icons.school :
+                              widget.selectedTransaction.categoryType.name == "Health" ? Icons.local_hospital :
+                              widget.selectedTransaction.categoryType.name == "Others" ? Icons.attach_money :
 
-                              selectedTransaction.categoryType.name == "Salary" ? Icons.work :
-                              selectedTransaction.categoryType.name == "Awards" ? Icons.military_tech :
-                              selectedTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
+                              widget.selectedTransaction.categoryType.name == "Salary" ? Icons.work :
+                              widget.selectedTransaction.categoryType.name == "Awards" ? Icons.military_tech :
+                              widget.selectedTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
                             ),
                             new FlatButton(
                                 child: new Text(
@@ -68,41 +70,48 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                             )
                           ],
                         ),
-                        _AmtTextField()
+                        _AmtTextField(selectedTransaction: widget.selectedTransaction)
                       ],
                     ),
-                    _DropdownButton(),
-                    _DatePicker(),
-                    _TimePicker(),
-                    _Notes(),
-                    new Align(
-                        alignment: Alignment.bottomRight,
-                        child: new RaisedButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: new Text('Submit'),
-                            onPressed: (){
-                              Account _chosenAccount = new Account();
-                              for (var i = 0; i < accountList.length; i++) {
-                                if (accountList[i].name == _selectedAccount.name) {
-                                  _chosenAccount = accountList[i];
-                                  break;
-                                }
-                              }
-                              _chosenAccount.accTransactionList.add(selectedTransaction);
-                              _chosenAccount.balance -= selectedTransaction.amount;
+                    _DropdownButton(selectedTransaction: widget.selectedTransaction),
+                    _DatePicker(selectedTransaction: widget.selectedTransaction),
+                    _TimePicker(selectedTransaction: widget.selectedTransaction),
+                    _Notes(selectedTransaction: widget.selectedTransaction),
+                    new SizedBox(
+                      height: 20,
+                    ),
+                    new Container(
+                      margin: new EdgeInsets.only(bottom: 5.0),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: new RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            side: BorderSide(color: Colors.black)),
+                        padding: EdgeInsets.all(10.0),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        child: new Text("Save Changes"),
+                        onPressed: (){
 
-                              setState(() {
-                                transactionList.add(selectedTransaction);
-                              });
+                        },
+                      ),
+                    ),
+                    new Container(
+                      margin: new EdgeInsets.only(bottom: 5.0),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: new RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            side: BorderSide(color: Colors.white)),
+                        padding: EdgeInsets.all(10.0),
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: new Text("Delete Transaction"),
+                        onPressed: (){
 
-                              Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
-                            }
-                        )
-                    )
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -115,11 +124,22 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
 
 //StatefulWidget for Amount
 class _AmtTextField extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _AmtTextField({ Key key, this.selectedTransaction}): super(key: key);
+
   @override
   _AmtTextFieldState createState() => new _AmtTextFieldState();
 }
 class _AmtTextFieldState extends State<_AmtTextField>{
-  final _amountController = TextEditingController(text: selectedTransaction.amount.toString());
+  TextEditingController _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    _amountController.text = widget.selectedTransaction.amount.toString();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -135,7 +155,7 @@ class _AmtTextFieldState extends State<_AmtTextField>{
             controller: _amountController,
             onChanged: (String a){
               setState(() {
-                selectedTransaction.amount = double.parse(a);
+                widget.selectedTransaction.amount = double.parse(a);
               });
             },
           ),
@@ -147,6 +167,12 @@ class _AmtTextFieldState extends State<_AmtTextField>{
 
 //StatefulWidget for Dropdownbutton
 class _DropdownButton extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _DropdownButton({ Key key, this.selectedTransaction}): super(key: key);
+
   @override
   _State createState() => new _State();
 }
@@ -154,12 +180,11 @@ class _State extends State<_DropdownButton>{
   List<DropdownMenuItem<Account>> _dropdownMenuItems;
 
   void initState() {
-    super.initState();
     _dropdownMenuItems = buildDropDownMenuItems(accountList);
-    for(int i; i<accountList.length; i++){
-      for (int j; j<accountList[i].accTransactionList.length; j++){
-        if (accountList[i].accTransactionList[j] == selectedTransaction) {
-          for (int k; k<_dropdownMenuItems.length; k++){
+    for (int i = 0; i < accountList.length; i++){
+      for (int j = 0; j < accountList[i].accTransactionList.length; j++){
+        if (accountList[i].accTransactionList[j] == widget.selectedTransaction) {
+          for (int k = 0; k<_dropdownMenuItems.length; k++){
             if (_dropdownMenuItems[k].value == accountList[i]){
               _selectedAccount = _dropdownMenuItems[k].value;
             }
@@ -208,17 +233,26 @@ class _State extends State<_DropdownButton>{
 
 //StatefulWidget for Datepicker
 class _DatePicker extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _DatePicker({ Key key, this.selectedTransaction}): super(key: key);
+
   @override
   _DatePickerState createState() => _DatePickerState();
 }
 class _DatePickerState extends State<_DatePicker>{
   final dateController = TextEditingController();
-  DateTime _date = new DateTime.now();
+
+  void initState(){
+    dateController.text = DateFormat("dd-MM-yyyy").format(widget.selectedTransaction.date).toString();
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: _date,
+        initialDate: widget.selectedTransaction.date,
         firstDate: new DateTime(2021),
         lastDate: new DateTime(2025)
     );
@@ -226,7 +260,7 @@ class _DatePickerState extends State<_DatePicker>{
       return;
     }
     dateController.text = DateFormat("dd-MM-yyyy").format(picked);
-    selectedTransaction.date = picked;
+    widget.selectedTransaction.date = picked;
   }
 
   @override
@@ -234,7 +268,7 @@ class _DatePickerState extends State<_DatePicker>{
     return new Container(
       margin: EdgeInsets.only(
         top: 10,
-        bottom: 30,
+        bottom: 0,
       ),
       child: new Row(
         children: [
@@ -264,23 +298,32 @@ class _DatePickerState extends State<_DatePicker>{
 
 //StatefulWidget for Timepicker
 class _TimePicker extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _TimePicker({ Key key, this.selectedTransaction}): super(key: key);
+
   @override
   _TimePickerState createState() => _TimePickerState();
 }
 class _TimePickerState extends State<_TimePicker>{
   final timeController = TextEditingController();
-  TimeOfDay _time = new TimeOfDay.now();
+
+  void initState(){
+    timeController.text = "${widget.selectedTransaction.time.hour.toString()}:${widget.selectedTransaction.time.minute.toString()}";
+  }
 
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
         context: context,
-        initialTime: _time
+        initialTime: widget.selectedTransaction.time
     );
     if (picked == null) {
       return;
     }
     timeController.text = "${picked.hour}:${picked.minute}";
-    selectedTransaction.time = picked;
+    widget.selectedTransaction.time = picked;
   }
 
   @override
@@ -288,7 +331,7 @@ class _TimePickerState extends State<_TimePicker>{
     return new Container(
       margin: EdgeInsets.only(
         top: 10,
-        bottom: 30,
+        bottom: 10,
       ),
       child: Row(
         children: [
@@ -318,11 +361,21 @@ class _TimePickerState extends State<_TimePicker>{
 
 //StatefulWidget for Notes
 class _Notes extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _Notes({ Key key, this.selectedTransaction}): super(key: key);
+
   @override
   _NotesState createState() => _NotesState();
 }
 class _NotesState extends State<_Notes>{
   final _notesController = TextEditingController();
+
+  void initState(){
+    _notesController.text = widget.selectedTransaction.note.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +385,7 @@ class _NotesState extends State<_Notes>{
       autocorrect: true,
       onChanged: (String t){
         setState(() {
-          selectedTransaction.note = t;
+          widget.selectedTransaction.note = t;
         });
       },
       decoration: new InputDecoration(labelText: "Notes (Optional)"),
