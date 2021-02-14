@@ -137,7 +137,27 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                         textColor: Colors.white,
                         child: new Text("Delete Transaction"),
                         onPressed: (){
+                          //Replacing the Account & Account Transaction in accountList
+                          for (var i = 0; i < accountList.length; i++) {
+                            if (accountList[i].name == _selectedAccount.name) {
+                              for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
+                                if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
+                                  accountList[i].balance+=widget.selectedTransaction.amount;
+                                  accountList[i].accTransactionList.removeAt(j);
+                                }
+                              }
+                            }
+                          }
+                          setState(() {
+                            //Replacing the Transaction in transactionList
+                            for (var i = 0; i < transactionList.length; i++){
+                              if (transactionList[i] == widget.selectedTransaction){
+                                transactionList.removeAt(i);
+                              }
+                            }
+                          });
 
+                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),
                     ),
