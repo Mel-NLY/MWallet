@@ -5,6 +5,7 @@ import 'package:MWallet/screens/home.dart';
 import 'package:intl/intl.dart';
 
 Account _selectedAccount;
+Transaction _newTransaction;
 
 class EditTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
@@ -21,7 +22,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
   @override
   void initState() {
     _selectedAccount = new Account();
-    print(widget.selectedTransaction.categoryType.name);
+    _newTransaction = widget.selectedTransaction;
   }
 
   @override
@@ -42,20 +43,20 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                         new Column(
                           children: <Widget>[
                             new Icon(
-                              widget.selectedTransaction.categoryType.name == "Transportation" ? Icons.commute :
-                              widget.selectedTransaction.categoryType.name == "Food" ? Icons.fastfood :
-                              widget.selectedTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
-                              widget.selectedTransaction.categoryType.name == "Bills" ? Icons.request_page :
-                              widget.selectedTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
-                              widget.selectedTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
-                              widget.selectedTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
-                              widget.selectedTransaction.categoryType.name == "Education" ? Icons.school :
-                              widget.selectedTransaction.categoryType.name == "Health" ? Icons.local_hospital :
-                              widget.selectedTransaction.categoryType.name == "Others" ? Icons.attach_money :
+                              _newTransaction.categoryType.name == "Transportation" ? Icons.commute :
+                              _newTransaction.categoryType.name == "Food" ? Icons.fastfood :
+                              _newTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
+                              _newTransaction.categoryType.name == "Bills" ? Icons.request_page :
+                              _newTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
+                              _newTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
+                              _newTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
+                              _newTransaction.categoryType.name == "Education" ? Icons.school :
+                              _newTransaction.categoryType.name == "Health" ? Icons.local_hospital :
+                              _newTransaction.categoryType.name == "Others" ? Icons.attach_money :
 
-                              widget.selectedTransaction.categoryType.name == "Salary" ? Icons.work :
-                              widget.selectedTransaction.categoryType.name == "Awards" ? Icons.military_tech :
-                              widget.selectedTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
+                              _newTransaction.categoryType.name == "Salary" ? Icons.work :
+                              _newTransaction.categoryType.name == "Awards" ? Icons.military_tech :
+                              _newTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
                             ),
                             new FlatButton(
                                 child: new Text(
@@ -70,13 +71,13 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                             )
                           ],
                         ),
-                        _AmtTextField(selectedTransaction: widget.selectedTransaction)
+                        _AmtTextField(selectedTransaction: _newTransaction)
                       ],
                     ),
-                    _DropdownButton(selectedTransaction: widget.selectedTransaction),
-                    _DatePicker(selectedTransaction: widget.selectedTransaction),
-                    _TimePicker(selectedTransaction: widget.selectedTransaction),
-                    _Notes(selectedTransaction: widget.selectedTransaction),
+                    _DropdownButton(selectedTransaction: _newTransaction),
+                    _DatePicker(selectedTransaction: _newTransaction),
+                    _TimePicker(selectedTransaction: _newTransaction),
+                    _Notes(selectedTransaction: _newTransaction),
                     new SizedBox(
                       height: 20,
                     ),
@@ -92,7 +93,35 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                         textColor: Colors.black,
                         child: new Text("Save Changes"),
                         onPressed: (){
+                          //Finding the Category Type
+                          for (var i = 0; i < Transaction.categoryTypes.length; i++) {
+                            if (Transaction.categoryTypes[i].name == _newTransaction.categoryType.name) {
+                              _newTransaction.categoryType = Transaction.categoryTypes[i];
+                              break;
+                            }
+                          }
+                          //Replacing the Account & Account Transaction in accountList
+                          for (var i = 0; i < accountList.length; i++) {
+                            if (accountList[i].name == _selectedAccount.name) {
+                              for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
+                                if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
+                                  accountList[i].balance+=widget.selectedTransaction.amount;
+                                  accountList[i].balance-=_newTransaction.amount;
+                                  accountList[i].accTransactionList[j] = _newTransaction;
+                                }
+                              }
+                            }
+                          }
+                          setState(() {
+                            //Replacing the Transaction in transactionList
+                            for (var i = 0; i < transactionList.length; i++){
+                              if (transactionList[i] == widget.selectedTransaction){
+                                transactionList[i] = _newTransaction;
+                              }
+                            }
+                          });
 
+                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),
                     ),
