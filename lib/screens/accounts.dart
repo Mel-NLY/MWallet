@@ -1,3 +1,4 @@
+import 'package:MWallet/screens/editAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/screens/home.dart';
 
@@ -46,38 +47,48 @@ class Accounts extends StatelessWidget{
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: new Container(
-                          padding: EdgeInsets.all(15),
-                          child: new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              new Text(
-                                '${accountList[index].name}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                        child: new InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditAccount(selectedAccount: accountList[index]),
+                              )
+                            );
+                          },
+                          child: new Container(
+                            padding: EdgeInsets.all(15),
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Text(
+                                  '${accountList[index].name}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              new Text(
-                                '${accountList[index].accountType}',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
+                                new Text(
+                                  '${accountList[index].accountType}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              new SizedBox(
-                                  height: 20
-                              ),
-                              new Text(
-                                '${accountList[index].balance.toStringAsFixed(2)} SGD',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                new SizedBox(
+                                    height: 20
                                 ),
-                              ),
-                            ],
+                                new Text(
+                                  '${accountList[index].balance.toStringAsFixed(2)} SGD',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

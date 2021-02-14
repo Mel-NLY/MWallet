@@ -11,7 +11,6 @@ class EditTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
   final Transaction selectedTransaction;
 
-  //In the constructor we require a String
   EditTransactionRecord({@required this.selectedTransaction});
 
   @override
@@ -142,7 +141,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                             if (accountList[i].name == _selectedAccount.name) {
                               for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
                                 if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                  accountList[i].balance+=widget.selectedTransaction.amount;
+                                  //accountList[i].balance+=widget.selectedTransaction.amount;
                                   accountList[i].accTransactionList.removeAt(j);
                                 }
                               }

@@ -88,7 +88,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                           }
                         }
                         _chosenAccount.accTransactionList.add(_newTransaction);
-                        _chosenAccount.balance -= _newTransaction.amount;
+                        //_chosenAccount.balance -= _newTransaction.amount;
 
                         setState(() {
                           transactionList.add(_newTransaction);

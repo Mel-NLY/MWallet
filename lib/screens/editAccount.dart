@@ -6,14 +6,19 @@ import 'package:MWallet/screens/home.dart';
 
 Account _newAccount;
 
-class CreateAccount extends StatefulWidget{
+class EditAccount extends StatefulWidget{
+  //Declare a field to hold the selected account
+  final Account selectedAccount;
+
+  EditAccount({@required this.selectedAccount});
+
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  _EditAccountState createState() => _EditAccountState();
 }
-class _CreateAccountState extends State<CreateAccount>{
+class _EditAccountState extends State<EditAccount>{
   @override
   void initState(){
-    _newAccount = new Account();
+    _newAccount = widget.selectedAccount;
   }
 
   @override
@@ -28,13 +33,13 @@ class _CreateAccountState extends State<CreateAccount>{
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              _AccountNameField(),
+              _AccountNameField(selectedAccount: _newAccount),
               new Container(
                 padding : new EdgeInsets.all(16.0),
                 child: new Column(
                   children: <Widget>[
-                    _AccountBalanceField(),
-                    _AccountTypeDropdown(),
+                    _AccountBalanceField(selectedAccount: _newAccount),
+                    _AccountTypeDropdown(selectedAccount: _newAccount),
                     new Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: new RaisedButton(
@@ -44,13 +49,45 @@ class _CreateAccountState extends State<CreateAccount>{
                         padding: EdgeInsets.all(10.0),
                         color: Colors.white,
                         textColor: Colors.black,
-                        child: new Text("Add the account!"),
+                        child: new Text("Save Changes"),
                         onPressed: (){
-                          accountList.add(_newAccount);
+                          setState(() {
+                            for(var i = 0; i < accountList.length; i++){
+                              if (accountList[i] == widget.selectedAccount){
+                                accountList[i] = _newAccount;
+                              }
+                            }
+                          });
+
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),
-                    )
+                    ),
+                    new Container(
+                      margin: new EdgeInsets.only(bottom: 5.0),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: new RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            side: BorderSide(color: Colors.white)),
+                        padding: EdgeInsets.all(10.0),
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: new Text("Delete Account"),
+                        onPressed: (){
+                          setState(() {
+                            //Replacing the Transaction in transactionList
+                            for (var i = 0; i < accountList.length; i++){
+                              if (accountList[i] == widget.selectedAccount){
+                                accountList.removeAt(i);
+                              }
+                            }
+                          });
+
+                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                        },
+                      ),
+                    ),
                   ]
                 )
               )
@@ -63,11 +100,20 @@ class _CreateAccountState extends State<CreateAccount>{
 }
 
 class _AccountNameField extends StatefulWidget{
+  final Account selectedAccount;
+
+  _AccountNameField({ Key key, this.selectedAccount}): super(key:key);
+
   @override
   _AccountNameFieldState createState() => new _AccountNameFieldState();
 }
 class _AccountNameFieldState extends State<_AccountNameField>{
   final _accountNameController = TextEditingController();
+
+  @override
+  void initState() {
+    _accountNameController.text = widget.selectedAccount.name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +137,20 @@ class _AccountNameFieldState extends State<_AccountNameField>{
 }
 
 class _AccountBalanceField extends StatefulWidget{
+  final Account selectedAccount;
+
+  _AccountBalanceField({ Key key, this.selectedAccount}): super(key:key);
+
   @override
   _AccountBalanceFieldState createState() => new _AccountBalanceFieldState();
 }
 class _AccountBalanceFieldState extends State<_AccountBalanceField>{
   final _accountBalanceController = TextEditingController();
+
+  @override
+  void initState() {
+    _accountBalanceController.text = widget.selectedAccount.balance.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +168,19 @@ class _AccountBalanceFieldState extends State<_AccountBalanceField>{
 }
 
 class _AccountTypeDropdown extends StatefulWidget{
+  final Account selectedAccount;
+
+  _AccountTypeDropdown({@required this.selectedAccount});
+
   @override
   _AccountTypeDropdownState createState() => new _AccountTypeDropdownState();
 }
 class _AccountTypeDropdownState extends State<_AccountTypeDropdown>{
+
+  @override
+  void initState(){
+    _newAccount.accountType = widget.selectedAccount.accountType;
+  }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
     List<DropdownMenuItem<String>> items = List();
