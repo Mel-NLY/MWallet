@@ -24,6 +24,10 @@ class Home extends StatelessWidget{
     return transactionBalance;
   }
 
+  @override
+  void initState(){
+    transactionList.sort((a,b)=> a.date.millisecondsSinceEpoch.compareTo(b.date.millisecondsSinceEpoch));
+  }
 
   @override
   Widget build(BuildContext context){
@@ -62,6 +66,29 @@ class Home extends StatelessWidget{
                       ),
                     ),
                   ]
+              ),
+              new Container(
+                margin: new EdgeInsets.only(bottom: 5.0),
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: new RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0.0),
+                      side: BorderSide(color: Colors.black)),
+                  padding: EdgeInsets.all(10.0),
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Icon(Icons.article_outlined),
+                      new SizedBox(width:10),
+                      new Text("View History"),
+                    ],
+                  ),
+                  onPressed: (){
+
+                  },
+                ),
               ),
               !isEmpty(transactionList) ? new Expanded(
                 child: new ListView.builder(

@@ -28,11 +28,21 @@ class _State extends State<CreateTransaction>{
           child: new Container(
             padding: new EdgeInsets.all(16.0),
             child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 new Row(
                   children: <Widget>[
-                    new Text('Expenses'),
+                    new Text(
+                      'Expenses',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ],
+                ),
+                new SizedBox(
+                    height: 10
                 ),
                 new Table(
                   children:[
@@ -176,10 +186,22 @@ class _State extends State<CreateTransaction>{
                     )
                   ],
                 ),
+                new SizedBox(
+                  height: 20
+                ),
                 new Row(
                   children: <Widget>[
-                    new Text('Income'),
+                    new Text(
+                     'Income',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ],
+                ),
+                new SizedBox(
+                    height: 10
                 ),
                 new Table(
                   children:[
@@ -222,10 +244,22 @@ class _State extends State<CreateTransaction>{
                     )
                   ],
                 ),
+                new SizedBox(
+                    height: 20
+                ),
                 new Row(
                   children: <Widget>[
-                    new Text('Transfer'),
+                    new Text(
+                      'Transfer',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ],
+                ),
+                new SizedBox(
+                    height: 10
                 ),
                 new Table(
                   children:[
