@@ -70,11 +70,11 @@ class Home extends StatelessWidget{
               new Container(
                 margin: new EdgeInsets.only(bottom: 5.0),
                 width: MediaQuery.of(context).size.width * 0.9,
+                height: 35,
                 child: new RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0.0),
                       side: BorderSide(color: Colors.black)),
-                  padding: EdgeInsets.all(10.0),
                   color: Colors.white,
                   textColor: Colors.black,
                   child: new Row(
