@@ -32,9 +32,26 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return new Scaffold(
+      appBar: new PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: new AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.article_outlined,
+                size: 30,
+                color: Theme.of(context).unselectedWidgetColor,
+              ),
+              onPressed: (){Navigator.of(context).pushNamed('/History');},
+            ),
+          ],
+        ),
+      ),
       body: new Center(
         child: new Container(
-          padding: EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
+          padding: EdgeInsets.only(left: 10.0, right: 10.0),
           child: new Column(
             children: <Widget>[
               new Row(
@@ -67,29 +84,29 @@ class Home extends StatelessWidget{
                     ),
                   ]
               ),
-              new Container(
-                margin: new EdgeInsets.only(bottom: 5.0),
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 35,
-                child: new RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                      side: BorderSide(color: Colors.black)),
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Icon(Icons.article_outlined),
-                      new SizedBox(width:10),
-                      new Text("View History"),
-                    ],
-                  ),
-                  onPressed: (){
-
-                  },
-                ),
-              ),
+              // new Container(
+              //   margin: new EdgeInsets.only(top: 5.0),
+              //   width: MediaQuery.of(context).size.width * 0.9,
+              //   height: 35,
+              //   child: new RaisedButton(
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(0.0),
+              //         side: BorderSide(color: Colors.black)),
+              //     color: Colors.white,
+              //     textColor: Colors.black,
+              //     child: new Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         new Icon(Icons.article_outlined),
+              //         new SizedBox(width:10),
+              //         new Text("View History"),
+              //       ],
+              //     ),
+              //     onPressed: (){
+              //       Navigator.of(context).pushNamed('/History');
+              //     },
+              //   ),
+              // ),
               !isEmpty(transactionList) ? new Expanded(
                 child: new ListView.builder(
                   physics: BouncingScrollPhysics(),

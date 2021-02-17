@@ -5,6 +5,7 @@ import 'package:MWallet/screens/home.dart';
 import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
 import 'package:MWallet/theme.dart';
+import 'package:MWallet/screens/history.dart';
 
 //Improvements
 //- Make sure all variables are private unless otherwise is needed
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget{
         '/Home': (BuildContext context) => new BottomNavBar(),
         '/CreateTransaction': (BuildContext context) => new CreateTransaction(),
         '/CreateAccount': (BuildContext context) => new CreateAccount(),
+        '/History': (BuildContext context) => new History(),
       },
       theme: myTheme,
       home: new BottomNavBar(),
