@@ -15,10 +15,17 @@ class Accounts extends StatelessWidget{
   Widget build(BuildContext context){
     var size = MediaQuery.of(context).size;
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - 340) / 2;
+    final double itemHeight = (size.height - 340) / 3;
     final double itemWidth = size.width / 2;
 
     return new Scaffold(
+      appBar: new PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: new AppBar(
+              backgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+              elevation: 0,
+          ),
+      ),
       body: new Stack(
         children: <Widget>[
           new Container(

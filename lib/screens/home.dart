@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 List<Account> accountList = new List<Account>();
 List<Transaction> transactionList = new List<Transaction>();
+List<Transaction> currentMonthTransactionList = new List<Transaction>();
 
 bool isEmpty(List<dynamic> tl){
   if (tl.length == 0){
@@ -18,15 +19,22 @@ bool isEmpty(List<dynamic> tl){
 class Home extends StatelessWidget{
   double calculateBalance(){
     double transactionBalance = 0;
-    for(int i = 0; i < transactionList.length; i++){
-      transactionBalance += transactionList.elementAt(i).amount;
+    for(int i = 0; i < currentMonthTransactionList.length; i++){
+      transactionBalance += currentMonthTransactionList.elementAt(i).amount;
     }
     return transactionBalance;
   }
 
-  @override
-  void initState(){
+  int initState(){
     transactionList.sort((a,b)=> a.date.millisecondsSinceEpoch.compareTo(b.date.millisecondsSinceEpoch));
+
+    for(int i = 0; i < transactionList.length; i++){
+      if (DateFormat('MMMM yyyy').format(transactionList[i].date) == DateFormat('MMMM yyyy').format(DateTime.now())){
+        currentMonthTransactionList.add(transactionList[i]);
+      }
+    }
+
+    return currentMonthTransactionList.length;
   }
 
   @override
@@ -107,12 +115,12 @@ class Home extends StatelessWidget{
               //     },
               //   ),
               // ),
-              !isEmpty(transactionList) ? new Expanded(
+              initState()!=0 ? new Expanded(
                 child: new ListView.builder(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: transactionList.length,
+                  itemCount: initState(),
                   itemBuilder: (BuildContext context, int index){
                     return new Card(
                       margin: new EdgeInsets.all(5.0),
@@ -125,7 +133,7 @@ class Home extends StatelessWidget{
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditTransactionRecord(selectedTransaction: transactionList[index]),
+                                builder: (context) => EditTransactionRecord(selectedTransaction: currentMonthTransactionList[index]),
                               )
                           );
                         },
@@ -143,7 +151,7 @@ class Home extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: new Text(
-                                '\$${transactionList[index].amount.toStringAsFixed(2)}',
+                                '\$${currentMonthTransactionList[index].amount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -157,14 +165,14 @@ class Home extends StatelessWidget{
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   new Text(
-                                    '${transactionList[index].categoryType.name}',
+                                    '${currentMonthTransactionList[index].categoryType.name}',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   new Text(
-                                    '${transactionList[index].note}',
+                                    '${currentMonthTransactionList[index].note}',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                     ),

@@ -6,6 +6,16 @@ import 'package:MWallet/screens/home.dart';
 
 Account _newAccount;
 
+//When Account is deleted, need to delete from transactionList as well (DONE)
+//Style CreateAccount screen (DONE)
+//Account page can move down abit (DONE)
+//Account page accounts can be smaller height wise (DONE)
+//History page should not contain current month (DONE)
+//Home page transactions should only include current month
+//Private variables
+//Create icon
+//Create launch page (Add some animation)
+
 class EditAccount extends StatefulWidget{
   //Declare a field to hold the selected account
   final Account selectedAccount;
@@ -76,14 +86,21 @@ class _EditAccountState extends State<EditAccount>{
                         child: new Text("Delete Account"),
                         onPressed: (){
                           setState(() {
-                            //Replacing the Transaction in transactionList
                             for (var i = 0; i < accountList.length; i++){
                               if (accountList[i] == widget.selectedAccount){
+                                for (var j = 0; j < accountList[i].accTransactionList.length; j++){
+                                  for (var k = 0; k < transactionList.length; k++){
+                                    if (accountList[i].accTransactionList[j] == transactionList[k]){
+                                      transactionList.removeAt(k);
+                                      break;
+                                    }
+                                  }
+                                }
                                 accountList.removeAt(i);
+                                break;
                               }
                             }
                           });
-
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),

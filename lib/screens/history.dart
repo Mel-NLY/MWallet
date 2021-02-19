@@ -4,7 +4,7 @@ import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/editTransactionRecord.dart';
 import 'package:intl/intl.dart';
 
-String _selectedMonth = "Show all months";
+String _selectedMonth = "Show prev months";
 List<Transaction> _selectedTransactions = transactionList;
 
 class History extends StatefulWidget{
@@ -24,12 +24,12 @@ class _HistoryState extends State<History>{
     List<DateTime> monthList = List();
     List<DropdownMenuItem<String>> menuItems = List();
     menuItems.add(new DropdownMenuItem(
-      child: new Text("Show all months"),
-      value: "Show all months",
+      child: new Text("Show prev months"),
+      value: "Show prev months",
     ),);
     for (Transaction t in transactionList){
       final foundDate = monthList.where((element) => DateFormat('MMMM yyyy').format(element) == DateFormat('MMMM yyyy').format(t.date));
-      if (foundDate.isEmpty){
+      if (foundDate.isEmpty && DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())){
         monthList.add(t.date);
       }
     }
@@ -62,7 +62,7 @@ class _HistoryState extends State<History>{
                   items: _dropdownMenuItems,
                   onChanged: (newValue){
                     final List<Transaction> temp = List();
-                    if (newValue != "Show all months"){
+                    if (newValue != "Show prev months"){
                       for (Transaction t in transactionList){
                         if (DateFormat('MMMM yyyy').format(t.date) == newValue){
                           temp.add(t);
@@ -70,7 +70,9 @@ class _HistoryState extends State<History>{
                       }
                     } else{
                       for (Transaction t in transactionList){
-                        temp.add(t);
+                        if (DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())) {
+                          temp.add(t);
+                        }
                       }
                     }
                     _selectedTransactions = temp;

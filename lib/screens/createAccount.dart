@@ -21,20 +21,21 @@ class _CreateAccountState extends State<CreateAccount>{
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Create Account"),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: new SingleChildScrollView(
         child: new Center(
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              _AccountNameField(),
               new Container(
-                padding : new EdgeInsets.all(16.0),
+                padding : new EdgeInsets.all(20.0),
                 child: new Column(
                   children: <Widget>[
+                    _AccountNameField(),
                     _AccountBalanceField(),
                     _AccountTypeDropdown(),
+                    new SizedBox(height: 20),
                     new Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: new RaisedButton(
@@ -71,21 +72,14 @@ class _AccountNameFieldState extends State<_AccountNameField>{
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      width: MediaQuery.of(context).size.width * 1,
-      padding: new EdgeInsets.all(32.0),
-      decoration: BoxDecoration(
-          color: Colors.blueAccent
-      ),
-      child: new TextField(
-        controller: _accountNameController,
-        decoration: new InputDecoration(labelText: 'Enter Account Name...'),
-        onChanged: (String name){
-          setState(() {
-            _newAccount.name = name;
-          });
-        },
-      ),
+    return new TextField(
+      controller: _accountNameController,
+      decoration: new InputDecoration(labelText: "Enter Account Name...", icon: Icon(Icons.edit)),
+      onChanged: (String name){
+        setState(() {
+          _newAccount.name = name;
+        });
+      },
     );
   }
 }
@@ -100,7 +94,7 @@ class _AccountBalanceFieldState extends State<_AccountBalanceField>{
   @override
   Widget build(BuildContext context) {
     return new TextField(
-      decoration: new InputDecoration(labelText: "Account Balance", icon: Icon(Icons.edit)),
+      decoration: new InputDecoration(labelText: "Account Balance", icon: Icon(Icons.account_balance)),
       keyboardType: TextInputType.number,
       controller: _accountBalanceController,
       onChanged: (String bal){
