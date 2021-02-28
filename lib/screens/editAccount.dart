@@ -11,10 +11,11 @@ Account _newAccount;
 //Account page can move down abit (DONE)
 //Account page accounts can be smaller height wise (DONE)
 //History page should not contain current month (DONE)
-//Home page transactions should only include current month
-//Private variables
-//Create icon
+//Home page transactions should only include current month (DONE)
+//Private variables (DONE)
+//Create icon (DONE)
 //Create launch page (Add some animation)
+//Add DB
 
 class EditAccount extends StatefulWidget{
   //Declare a field to hold the selected account

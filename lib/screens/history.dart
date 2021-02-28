@@ -31,6 +31,7 @@ class _HistoryState extends State<History>{
       final foundDate = monthList.where((element) => DateFormat('MMMM yyyy').format(element) == DateFormat('MMMM yyyy').format(t.date));
       if (foundDate.isEmpty && DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())){
         monthList.add(t.date);
+        print(t.date);
       }
     }
     for (DateTime m in monthList){
@@ -64,7 +65,7 @@ class _HistoryState extends State<History>{
                     final List<Transaction> temp = List();
                     if (newValue != "Show prev months"){
                       for (Transaction t in transactionList){
-                        if (DateFormat('MMMM yyyy').format(t.date) == newValue){
+                        if (DateFormat('MMMM yyyy').format(t.date) == newValue && DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())){
                           temp.add(t);
                         }
                       }

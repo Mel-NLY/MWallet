@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:MWallet/screens/home.dart';
 
 class Accounts extends StatelessWidget{
-  double calculateBalance(){
-    double accountBalance = 0;
+  double _calculateBalance(){
+    double _accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
-      accountBalance += accountList.elementAt(i).balance;
+      _accountBalance += accountList.elementAt(i).balance;
     }
-    return accountBalance;
+    return _accountBalance;
   }
 
   @override
   Widget build(BuildContext context){
-    var size = MediaQuery.of(context).size;
+    var _size = MediaQuery.of(context).size;
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - 340) / 3;
-    final double itemWidth = size.width / 2;
+    final double _itemHeight = (_size.height - 340) / 3;
+    final double _itemWidth = _size.width / 2;
 
     return new Scaffold(
       appBar: new PreferredSize(
@@ -43,10 +43,10 @@ class Accounts extends StatelessWidget{
               new SizedBox(height: 10),
               new Text('  Total'.toUpperCase(), style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 12)),
               new SizedBox(height: 5),
-              new Text(' \$${calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+              new Text(' \$${_calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
               !isEmpty(accountList) ? new Expanded(
                   child: new GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight),),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: (_itemWidth / _itemHeight),),
                     itemCount: accountList.length,
                     itemBuilder: (BuildContext context, int index){
                       return new Card(

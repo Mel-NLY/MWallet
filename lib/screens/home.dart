@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 List<Account> accountList = new List<Account>();
 List<Transaction> transactionList = new List<Transaction>();
-List<Transaction> currentMonthTransactionList = new List<Transaction>();
+List<Transaction> _currentMonthTransactionList;
 
 bool isEmpty(List<dynamic> tl){
   if (tl.length == 0){
@@ -16,25 +16,29 @@ bool isEmpty(List<dynamic> tl){
   }
 }
 
-class Home extends StatelessWidget{
+class Home extends StatefulWidget{
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home>{
   double calculateBalance(){
     double transactionBalance = 0;
-    for(int i = 0; i < currentMonthTransactionList.length; i++){
-      transactionBalance += currentMonthTransactionList.elementAt(i).amount;
+    for(int i = 0; i < _currentMonthTransactionList.length; i++){
+      transactionBalance += _currentMonthTransactionList.elementAt(i).amount;
     }
     return transactionBalance;
   }
 
-  int initState(){
+  @override
+  void initState(){
     transactionList.sort((a,b)=> a.date.millisecondsSinceEpoch.compareTo(b.date.millisecondsSinceEpoch));
-
+    _currentMonthTransactionList = new List<Transaction>();
     for(int i = 0; i < transactionList.length; i++){
       if (DateFormat('MMMM yyyy').format(transactionList[i].date) == DateFormat('MMMM yyyy').format(DateTime.now())){
-        currentMonthTransactionList.add(transactionList[i]);
+        _currentMonthTransactionList.add(transactionList[i]);
       }
     }
-
-    return currentMonthTransactionList.length;
   }
 
   @override
@@ -115,12 +119,12 @@ class Home extends StatelessWidget{
               //     },
               //   ),
               // ),
-              initState()!=0 ? new Expanded(
+              !isEmpty(_currentMonthTransactionList) ? new Expanded(
                 child: new ListView.builder(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: initState(),
+                  itemCount: _currentMonthTransactionList.length,
                   itemBuilder: (BuildContext context, int index){
                     return new Card(
                       margin: new EdgeInsets.all(5.0),
@@ -133,7 +137,7 @@ class Home extends StatelessWidget{
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditTransactionRecord(selectedTransaction: currentMonthTransactionList[index]),
+                                builder: (context) => EditTransactionRecord(selectedTransaction: _currentMonthTransactionList[index]),
                               )
                           );
                         },
@@ -151,7 +155,7 @@ class Home extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(18),
                               ),
                               child: new Text(
-                                '\$${currentMonthTransactionList[index].amount.toStringAsFixed(2)}',
+                                '\$${_currentMonthTransactionList[index].amount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -165,14 +169,14 @@ class Home extends StatelessWidget{
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   new Text(
-                                    '${currentMonthTransactionList[index].categoryType.name}',
+                                    '${_currentMonthTransactionList[index].categoryType.name}',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   new Text(
-                                    '${currentMonthTransactionList[index].note}',
+                                    '${_currentMonthTransactionList[index].note}',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                     ),
