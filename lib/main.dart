@@ -9,6 +9,7 @@ import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/history.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
 import 'package:MWallet/theme.dart';
+import 'dart:convert';
 
 import 'package:MWallet/database_helper.dart';
 
@@ -119,7 +120,7 @@ class _MyAppState extends State<MyApp>{
           DatabaseHelper.columnAccType  : accountList[i].accountType,
           DatabaseHelper.columnAmt  : accountList[i].accTransactionList[j].amount,
           DatabaseHelper.columnDate  : accountList[i].accTransactionList[j].date.toString(),
-          DatabaseHelper.columnTime  : accountList[i].accTransactionList[j].time.toString(),
+          DatabaseHelper.columnTime  : accountList[i].accTransactionList[j].time.hour.toString()+":"+accountList[i].accTransactionList[j].time.minute.toString(),
           DatabaseHelper.columnNote  : accountList[i].accTransactionList[j].note,
           DatabaseHelper.columnCatType  : accountList[i].accTransactionList[j].categoryType.name
         };
@@ -133,11 +134,30 @@ class _MyAppState extends State<MyApp>{
     print('query all rows:');
     List<Account> accountList = new List<Account>();
     List<Transaction> transactionList = new List<Transaction>();
-    allRows.forEach((row) => print(row));
-  }
+    Account _acc = new Account();
+    allRows.forEach((row) {
+      if (!accountList.contains(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1])){
+        _acc.name = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1];
+        _acc.balance = double.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[2]);
+        _acc.accountType = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[3];
+      } else{
+        for (var i=0; i<accountList.length;i++){
+          if (accountList[i].name == row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1]){
+           _acc = accountList[i];
+          }
+        }
+      }
 
-  void _reAddRecords(Map<String, dynamic> row) async{
-
+      Transaction _t = new Transaction();
+      _t.amount = double.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[4]);
+      print(row.values.toString().substring(1,row.values.toString().length-1).split(', '));
+      _t.date = DateTime.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[5]);
+      _t.time = TimeOfDay(hour:int.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[6].split(":")[0]), minute: int.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[6].split(":")[1]));
+      _t.note = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[7];
+      _t.categoryType.name = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[8];
+      _acc.accTransactionList.add(_t);
+      transactionList.add(_t);
+    });
   }
 }
 

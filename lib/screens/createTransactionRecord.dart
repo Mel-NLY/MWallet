@@ -21,6 +21,7 @@ class CreateTransactionRecord extends StatefulWidget{
 
 class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   @override
+  @override
   void initState() {
     _newTransaction = new Transaction();
     _selectedAccount = new Account();
