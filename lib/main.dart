@@ -9,9 +9,18 @@ import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/history.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
 import 'package:MWallet/theme.dart';
-import 'dart:convert';
-
 import 'package:MWallet/database_helper.dart';
+
+//When Account is deleted, need to delete from transactionList as well (DONE)
+//Style CreateAccount screen (DONE)
+//Account page can move down a bit (DONE)
+//Account page accounts can be smaller height wise (DONE)
+//History page should not contain current month (DONE)
+//Home page transactions should only include current month (DONE)
+//Private variables (DONE)
+//Create icon (DONE)
+//Create launch page (Add some animation)
+//Add DB (DONE)
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

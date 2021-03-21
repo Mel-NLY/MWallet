@@ -5,7 +5,7 @@ import 'package:MWallet/screens/editTransactionRecord.dart';
 import 'package:intl/intl.dart';
 
 String _selectedMonth = "Show prev months";
-List<Transaction> _selectedTransactions = transactionList;
+List<Transaction> _selectedTransactions = List();
 
 class History extends StatefulWidget{
   @override
@@ -29,9 +29,15 @@ class _HistoryState extends State<History>{
     ),);
     for (Transaction t in transactionList){
       final foundDate = monthList.where((element) => DateFormat('MMMM yyyy').format(element) == DateFormat('MMMM yyyy').format(t.date));
-      if (foundDate.isEmpty && DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())){
-        monthList.add(t.date);
-        print(t.date);
+      if (DateFormat('MMMM yyyy').format(t.date) != DateFormat('MMMM yyyy').format(DateTime.now())){
+        if (foundDate.isEmpty){
+          monthList.add(t.date);
+          print(t.date);
+        }
+        final foundTransaction = _selectedTransactions.where((element) => element == t);
+        if (foundTransaction.isEmpty){
+          _selectedTransactions.add(t);
+        }
       }
     }
     for (DateTime m in monthList){
