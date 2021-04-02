@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:MWallet/codes/transaction.dart';
@@ -112,12 +113,44 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                             }
                           }
                           setState(() {
+                            Account _chosenAccount = new Account();
+                            for (var i = 0; i < accountList.length; i++) {
+                              if (accountList[i].name == _selectedAccount.name) {
+                                _chosenAccount = accountList[i];
+                                _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
+                                break;
+                              }
+                            }
+
                             //Replacing the Transaction in transactionList
                             for (var i = 0; i < transactionList.length; i++){
                               if (transactionList[i] == widget.selectedTransaction){
                                 transactionList[i] = _newTransaction;
                               }
                             }
+
+                            FirebaseFirestore.instance //Update chosen account balance in Firebase
+                              .collection('accounts')
+                              .doc(_chosenAccount.name)
+                              .update({
+                                'balance': _chosenAccount.balance,
+                              }).catchError((onError){
+                                print("Error when updating Acc balance");
+                              });
+                            FirebaseFirestore.instance
+                              .collection('accounts')
+                              .doc(_chosenAccount.name)
+                              .collection('transactions')
+                            //Must get transaction ID list from when they query and save it somewhere
+                              .update({
+                                'amount': _newTransaction.amount,
+                                'date': _newTransaction.date.toString(),
+                                'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
+                                'note': _newTransaction.note,
+                                'categoryType': _newTransaction.categoryType.name
+                              }).catchError((onError){
+                                print("Error when updating transaction");
+                              });
                           });
 
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);

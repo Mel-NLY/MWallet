@@ -9,21 +9,17 @@ import 'package:MWallet/screens/accounts.dart';
 import 'package:MWallet/screens/history.dart';
 import 'package:MWallet/screens/createTransactionCategory.dart';
 import 'package:MWallet/theme.dart';
-import 'package:MWallet/database_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:firebase_core/firebase_core.dart';
 
-//When Account is deleted, need to delete from transactionList as well (DONE)
-//Style CreateAccount screen (DONE)
-//Account page can move down a bit (DONE)
-//Account page accounts can be smaller height wise (DONE)
-//History page should not contain current month (DONE)
-//Home page transactions should only include current month (DONE)
-//Private variables (DONE)
-//Create icon (DONE)
 //Create launch page (Add some animation)
-//Add DB (DONE)
+//Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
+//App logo shows
+//Remove local db
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
@@ -76,11 +72,10 @@ class MyApp extends StatefulWidget{
 }
 
 class _MyAppState extends State<MyApp>{
-  // reference to our single class that manages the database
-  final dbHelper = DatabaseHelper.instance;
 
   void initState() {
     super.initState();
+    _query();
 
     WidgetsBinding.instance.addObserver(
         LifecycleEventHandler(resumeCallBack: () async => setState(() {
@@ -89,8 +84,6 @@ class _MyAppState extends State<MyApp>{
     );
     WidgetsBinding.instance.addObserver(
         LifecycleEventHandler(inactiveCallBack: () async => setState(() {
-          dbHelper.delete();
-          _insert();
         }))
     );
     WidgetsBinding.instance.addObserver(
@@ -99,7 +92,6 @@ class _MyAppState extends State<MyApp>{
     );
     WidgetsBinding.instance.addObserver(
         LifecycleEventHandler(suspendingCallBack: () async => setState(() {
-          print("suspended");
         }))
     );
   }
@@ -119,53 +111,29 @@ class _MyAppState extends State<MyApp>{
     );
   }
 
-  void _insert() async {
-    // row to insert
-    for(var i=0;i<accountList.length;i++){
-      for(var j=0;j<accountList[i].accTransactionList.length;j++){
-        Map<String, dynamic> row = {
-          DatabaseHelper.columnName : accountList[i].name,
-          DatabaseHelper.columnBal  : accountList[i].balance,
-          DatabaseHelper.columnAccType  : accountList[i].accountType,
-          DatabaseHelper.columnAmt  : accountList[i].accTransactionList[j].amount,
-          DatabaseHelper.columnDate  : accountList[i].accTransactionList[j].date.toString(),
-          DatabaseHelper.columnTime  : accountList[i].accTransactionList[j].time.hour.toString()+":"+accountList[i].accTransactionList[j].time.minute.toString(),
-          DatabaseHelper.columnNote  : accountList[i].accTransactionList[j].note,
-          DatabaseHelper.columnCatType  : accountList[i].accTransactionList[j].categoryType.name
-        };
-        final id = dbHelper.insert(row);
-      }
-    }
-  }
-
   void _query() async {
-    final allRows = await dbHelper.queryAllRows();
-    print('query all rows:');
     List<Account> accountList = new List<Account>();
     List<Transaction> transactionList = new List<Transaction>();
     Account _acc = new Account();
-    allRows.forEach((row) {
-      if (!accountList.contains(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1])){
-        _acc.name = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1];
-        _acc.balance = double.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[2]);
-        _acc.accountType = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[3];
-      } else{
-        for (var i=0; i<accountList.length;i++){
-          if (accountList[i].name == row.values.toString().substring(1,row.values.toString().length-1).split(', ')[1]){
-           _acc = accountList[i];
-          }
-        }
-      }
 
-      Transaction _t = new Transaction();
-      _t.amount = double.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[4]);
-      print(row.values.toString().substring(1,row.values.toString().length-1).split(', '));
-      _t.date = DateTime.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[5]);
-      _t.time = TimeOfDay(hour:int.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[6].split(":")[0]), minute: int.parse(row.values.toString().substring(1,row.values.toString().length-1).split(', ')[6].split(":")[1]));
-      _t.note = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[7];
-      _t.categoryType.name = row.values.toString().substring(1,row.values.toString().length-1).split(', ')[8];
-      _acc.accTransactionList.add(_t);
-      transactionList.add(_t);
+    final accData = await FirebaseFirestore.instance.collection('accounts').get();
+    accData.docs.forEach((accResult) async {
+      _acc.name = accResult.id;
+      _acc.balance = accResult["balance"];
+      _acc.accountType = accResult["accountType"];
+      print("ACCOUNT BALANCE" + _acc.balance.toString());
+      final transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transaction").get();
+      Transaction _trans = Transaction();
+      transData.docs.forEach((transResult){
+        _trans.amount = transResult["amount"];
+        _trans.date = transResult["date"];
+        _trans.time = transResult["time"];
+        _trans.note = transResult["note"];
+        _trans.categoryType = transResult["categoryType"];
+        transactionList.add(_trans);
+        _acc.accTransactionList.add(_trans);
+      });
+      accountList.add(_acc);
     });
   }
 }

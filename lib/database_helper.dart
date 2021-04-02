@@ -57,7 +57,7 @@ class DatabaseHelper {
             $columnNote TEXT NOT NULL,
             $columnCatType TEXT NOT NULL
           )
-          ''');
+    ''');
   }
 
   // Helper methods

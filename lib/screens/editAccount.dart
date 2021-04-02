@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
@@ -56,6 +57,15 @@ class _EditAccountState extends State<EditAccount>{
                                 accountList[i] = _newAccount;
                               }
                             }
+                            FirebaseFirestore.instance
+                                .collection('accounts')
+                                .doc(_newAccount.name)
+                                .update({
+                              'balance': _newAccount.name,
+                              'accountType': _newAccount.accountType
+                            }).catchError((onError){
+                              print("Error when adding new Account");
+                            });
                           });
 
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);

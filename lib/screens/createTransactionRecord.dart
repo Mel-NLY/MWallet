@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:MWallet/codes/transaction.dart';
@@ -79,6 +80,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                         for (var i = 0; i < accountList.length; i++) {
                           if (accountList[i].name == _selectedAccount.name) {
                             _chosenAccount = accountList[i];
+                            _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
                             break;
                           }
                         }
@@ -92,6 +94,27 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                         setState(() {
                           _chosenAccount.accTransactionList.add(_newTransaction);
                           transactionList.add(_newTransaction);
+                          FirebaseFirestore.instance //Update chosen account balance in Firebase
+                              .collection('accounts')
+                              .doc(_chosenAccount.name)
+                              .update({
+                                'balance': _chosenAccount.balance,
+                              }).catchError((onError){
+                                print("Error when updating Acc balance");
+                              });
+                          FirebaseFirestore.instance
+                              .collection('accounts')
+                              .doc(_chosenAccount.name)
+                              .collection('transactions')
+                              .add({
+                                'amount': _newTransaction.amount,
+                                'date': _newTransaction.date.toString(),
+                                'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
+                                'note': _newTransaction.note,
+                                'categoryType': _newTransaction.categoryType.name
+                              }).catchError((onError){
+                                print("Error when adding new transaction");
+                              });
                         });
 
                         Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
