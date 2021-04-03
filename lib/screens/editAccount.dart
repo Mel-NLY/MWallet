@@ -61,11 +61,11 @@ class _EditAccountState extends State<EditAccount>{
                                 .collection('accounts')
                                 .doc(_newAccount.name)
                                 .update({
-                              'balance': _newAccount.name,
-                              'accountType': _newAccount.accountType
-                            }).catchError((onError){
-                              print("Error when adding new Account");
-                            });
+                                  'balance': _newAccount.name,
+                                  'accountType': _newAccount.accountType
+                                }).catchError((onError){
+                                  print("Error when adding new Account");
+                                });
                           });
 
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
@@ -99,6 +99,8 @@ class _EditAccountState extends State<EditAccount>{
                                 break;
                               }
                             }
+
+                            FirebaseFirestore.instance.collection('accounts').doc(widget.selectedAccount.name).delete();
                           });
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },

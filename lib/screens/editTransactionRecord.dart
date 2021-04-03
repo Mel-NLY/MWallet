@@ -141,7 +141,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                               .collection('accounts')
                               .doc(_chosenAccount.name)
                               .collection('transactions')
-                            //Must get transaction ID list from when they query and save it somewhere
+                              .doc(_newTransaction.id)
                               .update({
                                 'amount': _newTransaction.amount,
                                 'date': _newTransaction.date.toString(),
@@ -187,6 +187,8 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                                 transactionList.removeAt(i);
                               }
                             }
+
+                            FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transaction').doc(_newTransaction.id).delete();
                           });
 
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);

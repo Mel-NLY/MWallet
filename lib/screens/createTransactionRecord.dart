@@ -92,8 +92,6 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                         }
 
                         setState(() {
-                          _chosenAccount.accTransactionList.add(_newTransaction);
-                          transactionList.add(_newTransaction);
                           FirebaseFirestore.instance //Update chosen account balance in Firebase
                               .collection('accounts')
                               .doc(_chosenAccount.name)
@@ -112,9 +110,13 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                                 'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
                                 'note': _newTransaction.note,
                                 'categoryType': _newTransaction.categoryType.name
+                              }).then((value){
+                                _newTransaction.id = value.id; //Get random generated document ID
                               }).catchError((onError){
                                 print("Error when adding new transaction");
                               });
+                          _chosenAccount.accTransactionList.add(_newTransaction);
+                          transactionList.add(_newTransaction);
                         });
 
                         Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);

@@ -16,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
 //App logo shows
 //Remove local db
+//Do up adding of amount for salary
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -121,17 +122,19 @@ class _MyAppState extends State<MyApp>{
       _acc.name = accResult.id;
       _acc.balance = accResult["balance"];
       _acc.accountType = accResult["accountType"];
-      print("ACCOUNT BALANCE" + _acc.balance.toString());
-      final transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transaction").get();
+      print("ACCOUNT BALANCE " + _acc.balance.toString());
+      final transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transactions").get();
       Transaction _trans = Transaction();
       transData.docs.forEach((transResult){
-        _trans.amount = transResult["amount"];
-        _trans.date = transResult["date"];
-        _trans.time = transResult["time"];
+        _trans.amount = transResult["amount"].toDouble();
+        _trans.date =  DateTime.parse(transResult["date"]);
+        List _hm = transResult["time"].split(":");
+        _trans.time = TimeOfDay(hour:int.parse(_hm[0]), minute: int.parse(_hm[1]));
         _trans.note = transResult["note"];
-        _trans.categoryType = transResult["categoryType"];
+        _trans.categoryType.name = transResult["categoryType"];
         transactionList.add(_trans);
         _acc.accTransactionList.add(_trans);
+        print("ACCOUNT BALANCE TRANSACTION AMOUNT" + _trans.amount.toString());
       });
       accountList.add(_acc);
     });
