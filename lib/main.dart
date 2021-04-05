@@ -73,14 +73,13 @@ class MyApp extends StatefulWidget{
 }
 
 class _MyAppState extends State<MyApp>{
-
+  @override
   void initState() {
     super.initState();
-    _query();
+    asyncMethod();
 
     WidgetsBinding.instance.addObserver(
         LifecycleEventHandler(resumeCallBack: () async => setState(() {
-          _query();
         }))
     );
     WidgetsBinding.instance.addObserver(
@@ -97,6 +96,36 @@ class _MyAppState extends State<MyApp>{
     );
   }
 
+  void asyncMethod() async {
+    await _query();
+  }
+
+  Future<void> _query() async{
+    var accData = await FirebaseFirestore.instance.collection('accounts').get();
+    await Future.forEach(accData.docs, (accResult) async{
+      Account _acc = new Account();
+      _acc.name = accResult.id;
+      _acc.balance = accResult["balance"];
+      _acc.accountType = accResult["accountType"];
+      var transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transactions").get();
+      await Future.forEach(transData.docs, (transResult) async{
+        Transaction _trans = new Transaction();
+        _trans.id = transResult.id;
+        _trans.amount = transResult["amount"].toDouble();
+        _trans.date =  DateTime.parse(transResult["date"]);
+        List _hm = transResult["time"].split(":");
+        _trans.time = TimeOfDay(hour:int.parse(_hm[0]), minute: int.parse(_hm[1]));
+        _trans.note = transResult["note"];
+        _trans.categoryType = Transaction.categoryTypes.firstWhere((x) => x.name == transResult["categoryType"]);
+        transactionList.add(_trans);
+        _acc.accTransactionList.add(_trans);
+      });
+      accountList.add(_acc);
+    });
+    transactionList.forEach((x){
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return new MaterialApp(
@@ -111,34 +140,6 @@ class _MyAppState extends State<MyApp>{
       home: new BottomNavBar(),
     );
   }
-
-  void _query() async {
-    List<Account> accountList = new List<Account>();
-    List<Transaction> transactionList = new List<Transaction>();
-    Account _acc = new Account();
-
-    final accData = await FirebaseFirestore.instance.collection('accounts').get();
-    accData.docs.forEach((accResult) async {
-      _acc.name = accResult.id;
-      _acc.balance = accResult["balance"];
-      _acc.accountType = accResult["accountType"];
-      print("ACCOUNT BALANCE " + _acc.balance.toString());
-      final transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transactions").get();
-      Transaction _trans = Transaction();
-      transData.docs.forEach((transResult){
-        _trans.amount = transResult["amount"].toDouble();
-        _trans.date =  DateTime.parse(transResult["date"]);
-        List _hm = transResult["time"].split(":");
-        _trans.time = TimeOfDay(hour:int.parse(_hm[0]), minute: int.parse(_hm[1]));
-        _trans.note = transResult["note"];
-        _trans.categoryType.name = transResult["categoryType"];
-        transactionList.add(_trans);
-        _acc.accTransactionList.add(_trans);
-        print("ACCOUNT BALANCE TRANSACTION AMOUNT" + _trans.amount.toString());
-      });
-      accountList.add(_acc);
-    });
-  }
 }
 
 //StatefulWidget for Bottom Navigation Bar
@@ -148,7 +149,6 @@ class BottomNavBar extends StatefulWidget{
 }
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<dynamic> _widgetOptions = <dynamic>[
     Home(),
     Accounts(),

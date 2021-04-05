@@ -188,7 +188,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                               }
                             }
 
-                            FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transaction').doc(_newTransaction.id).delete();
+                            FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transactions').doc(_newTransaction.id).delete();
                           });
 
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);

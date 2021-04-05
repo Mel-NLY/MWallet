@@ -8,3 +8,5 @@ class Account{
   double balance = 0;
   List<Transaction> accTransactionList = <Transaction>[];
 }
+
+//Add a constructor

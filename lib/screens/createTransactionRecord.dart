@@ -22,7 +22,6 @@ class CreateTransactionRecord extends StatefulWidget{
 
 class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   @override
-  @override
   void initState() {
     _newTransaction = new Transaction();
     _selectedAccount = new Account();
@@ -76,22 +75,21 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                       ),
                       child: new Text('Submit'),
                       onPressed: (){
-                        Account _chosenAccount = new Account();
-                        for (var i = 0; i < accountList.length; i++) {
-                          if (accountList[i].name == _selectedAccount.name) {
-                            _chosenAccount = accountList[i];
-                            _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
-                            break;
-                          }
-                        }
-                        for (var i = 0; i < Transaction.categoryTypes.length; i++) {
-                          if (Transaction.categoryTypes[i].name == widget.selectedCategory) {
-                            _newTransaction.categoryType = Transaction.categoryTypes[i];
-                            break;
-                          }
-                        }
-
                         setState(() {
+                          Account _chosenAccount = new Account();
+                          for (var i = 0; i < accountList.length; i++) {
+                            if (accountList[i].name == _selectedAccount.name) {
+                              _chosenAccount = accountList[i];
+                              _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
+                              break;
+                            }
+                          }
+                          for (var i = 0; i < Transaction.categoryTypes.length; i++) {
+                            if (Transaction.categoryTypes[i].name == widget.selectedCategory) {
+                              _newTransaction.categoryType = Transaction.categoryTypes[i];
+                              break;
+                            }
+                          }
                           FirebaseFirestore.instance //Update chosen account balance in Firebase
                               .collection('accounts')
                               .doc(_chosenAccount.name)
@@ -185,7 +183,7 @@ class _State extends State<_DropdownButton>{
       items.add(
         new DropdownMenuItem(
           child: new Text(listItem.name),
-          value: listItem,
+          value: listItem
         ),
       );
     }

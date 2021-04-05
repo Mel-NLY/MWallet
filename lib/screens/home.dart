@@ -23,11 +23,11 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home>{
   double calculateBalance(){
-    double transactionBalance = 0;
+    double _transactionBalance = 0;
     for(int i = 0; i < _currentMonthTransactionList.length; i++){
-      transactionBalance += _currentMonthTransactionList.elementAt(i).amount;
+      _transactionBalance += _currentMonthTransactionList.elementAt(i).amount;
     }
-    return transactionBalance;
+    return _transactionBalance;
   }
 
   @override
@@ -96,29 +96,6 @@ class _HomeState extends State<Home>{
                     ),
                   ]
               ),
-              // new Container(
-              //   margin: new EdgeInsets.only(top: 5.0),
-              //   width: MediaQuery.of(context).size.width * 0.9,
-              //   height: 35,
-              //   child: new RaisedButton(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(0.0),
-              //         side: BorderSide(color: Colors.black)),
-              //     color: Colors.white,
-              //     textColor: Colors.black,
-              //     child: new Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         new Icon(Icons.article_outlined),
-              //         new SizedBox(width:10),
-              //         new Text("View History"),
-              //       ],
-              //     ),
-              //     onPressed: (){
-              //       Navigator.of(context).pushNamed('/History');
-              //     },
-              //   ),
-              // ),
               !isEmpty(_currentMonthTransactionList) ? new Expanded(
                 child: new ListView.builder(
                   physics: BouncingScrollPhysics(),

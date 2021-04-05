@@ -50,14 +50,14 @@ class _CreateAccountState extends State<CreateAccount>{
                         onPressed: (){
                           accountList.add(_newAccount);
                           FirebaseFirestore.instance
-                              .collection('accounts')
-                              .doc(_newAccount.name)
-                              .set({
-                                'balance': _newAccount.name,
-                                'accountType': _newAccount.accountType
-                              }).catchError((onError){
-                                print("Error when adding new Account");
-                              });
+                            .collection('accounts')
+                            .doc(_newAccount.name)
+                            .set({
+                              'balance': _newAccount.name,
+                              'accountType': _newAccount.accountType
+                            }).catchError((onError){
+                              print("Error when adding new Account");
+                            });
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),
