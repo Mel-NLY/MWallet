@@ -19,7 +19,6 @@ class CreateTransactionRecord extends StatefulWidget{
   @override
   _CreateTransactionRecordState createState() => _CreateTransactionRecordState();
 }
-
 class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   @override
   void initState() {
@@ -163,12 +162,12 @@ class _AmtTextFieldState extends State<_AmtTextField>{
   }
 }
 
-//StatefulWidget for Dropdownbutton
+//StatefulWidget for DropdownButton
 class _DropdownButton extends StatefulWidget{
   @override
-  _State createState() => new _State();
+  _DropdownButtonState createState() => new _DropdownButtonState();
 }
-class _State extends State<_DropdownButton>{
+class _DropdownButtonState extends State<_DropdownButton>{
   @override
   void initState(){
     _selectedAccount.name = accountList[0].name;

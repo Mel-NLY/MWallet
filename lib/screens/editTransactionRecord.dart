@@ -5,6 +5,8 @@ import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:intl/intl.dart';
 
+import 'editTransactionCategory.dart';
+
 Account _selectedAccount;
 Transaction _newTransaction;
 
@@ -31,34 +33,36 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
         appBar: new AppBar(
           title: new Text('Edit Transaction'),
         ),
-        body: new SingleChildScrollView(
-          child: new Center(
-            child: new Card(
-              child: new Container(
-                padding: new EdgeInsets.all(16.0),
-                child: new Column(
-                  children: <Widget>[
-                    new Row(
-                      children: <Widget>[
-                        new Column(
-                          children: <Widget>[
-                            new Icon(
-                              _newTransaction.categoryType.name == "Transportation" ? Icons.commute :
-                              _newTransaction.categoryType.name == "Food" ? Icons.fastfood :
-                              _newTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
-                              _newTransaction.categoryType.name == "Bills" ? Icons.request_page :
-                              _newTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
-                              _newTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
-                              _newTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
-                              _newTransaction.categoryType.name == "Education" ? Icons.school :
-                              _newTransaction.categoryType.name == "Health" ? Icons.local_hospital :
-                              _newTransaction.categoryType.name == "Others" ? Icons.attach_money :
+        body: new WillPopScope(
+          onWillPop: null,
+          child: new SingleChildScrollView(
+            child: new Center(
+              child: new Card(
+                child: new Container(
+                  padding: new EdgeInsets.all(16.0),
+                  child: new Column(
+                    children: <Widget>[
+                      new Row(
+                        children: <Widget>[
+                          new Column(
+                            children: <Widget>[
+                              new Icon(
+                                _newTransaction.categoryType.name == "Transportation" ? Icons.commute :
+                                _newTransaction.categoryType.name == "Food" ? Icons.fastfood :
+                                _newTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
+                                _newTransaction.categoryType.name == "Bills" ? Icons.request_page :
+                                _newTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
+                                _newTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
+                                _newTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
+                                _newTransaction.categoryType.name == "Education" ? Icons.school :
+                                _newTransaction.categoryType.name == "Health" ? Icons.local_hospital :
+                                _newTransaction.categoryType.name == "Others" ? Icons.attach_money :
 
-                              _newTransaction.categoryType.name == "Salary" ? Icons.work :
-                              _newTransaction.categoryType.name == "Awards" ? Icons.military_tech :
-                              _newTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
-                            ),
-                            new FlatButton(
+                                _newTransaction.categoryType.name == "Salary" ? Icons.work :
+                                _newTransaction.categoryType.name == "Awards" ? Icons.military_tech :
+                                _newTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
+                              ),
+                              new FlatButton(
                                 child: new Text(
                                   "Change",
                                   style: TextStyle(
@@ -67,82 +71,89 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onPressed: (){Navigator.of(context).pushNamedAndRemoveUntil('/CreateTransaction', (Route<dynamic> route) => false);}
-                            )
-                          ],
-                        ),
-                        _AmtTextField(selectedTransaction: _newTransaction)
-                      ],
-                    ),
-                    _DropdownButton(selectedTransaction: _newTransaction),
-                    _DatePicker(selectedTransaction: _newTransaction),
-                    _TimePicker(selectedTransaction: _newTransaction),
-                    _Notes(selectedTransaction: _newTransaction),
-                    new SizedBox(
-                      height: 20,
-                    ),
-                    new Container(
-                      margin: new EdgeInsets.only(bottom: 5.0),
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: new RaisedButton(
-                        shape: RoundedRectangleBorder(
+                                onPressed: (){
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditTransactionCategory(selectedTransaction: _newTransaction),
+                                      )
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          _AmtTextField(selectedTransaction: _newTransaction)
+                        ],
+                      ),
+                      _DropdownButton(selectedTransaction: _newTransaction),
+                      _DatePicker(selectedTransaction: _newTransaction),
+                      _TimePicker(selectedTransaction: _newTransaction),
+                      _Notes(selectedTransaction: _newTransaction),
+                      new SizedBox(
+                        height: 20,
+                      ),
+                      new Container(
+                        margin: new EdgeInsets.only(bottom: 5.0),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: new RaisedButton(
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0.0),
                             side: BorderSide(color: Colors.black)),
-                        padding: EdgeInsets.all(10.0),
-                        color: Colors.white,
-                        textColor: Colors.black,
-                        child: new Text("Save Changes"),
-                        onPressed: (){
-                          //Finding the Category Type
-                          for (var i = 0; i < Transaction.categoryTypes.length; i++) {
-                            if (Transaction.categoryTypes[i].name == _newTransaction.categoryType.name) {
-                              _newTransaction.categoryType = Transaction.categoryTypes[i];
-                              break;
-                            }
-                          }
-                          //Replacing the Account & Account Transaction in accountList
-                          for (var i = 0; i < accountList.length; i++) {
-                            if (accountList[i].name == _selectedAccount.name) {
-                              for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
-                                if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                  accountList[i].balance+=widget.selectedTransaction.amount;
-                                  accountList[i].balance-=_newTransaction.amount;
-                                  accountList[i].accTransactionList[j] = _newTransaction;
-                                }
-                              }
-                            }
-                          }
-                          setState(() {
-                            Account _chosenAccount = new Account();
-                            for (var i = 0; i < accountList.length; i++) {
-                              if (accountList[i].name == _selectedAccount.name) {
-                                _chosenAccount = accountList[i];
-                                _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
+                          padding: EdgeInsets.all(10.0),
+                          color: Colors.white,
+                          textColor: Colors.black,
+                          child: new Text("Save Changes"),
+                          onPressed: (){
+                            //Finding the Category Type
+                            for (var i = 0; i < Transaction.categoryTypes.length; i++) {
+                              if (Transaction.categoryTypes[i].name == _newTransaction.categoryType.name) {
+                                _newTransaction.categoryType = Transaction.categoryTypes[i];
                                 break;
                               }
                             }
-
-                            //Replacing the Transaction in transactionList
-                            for (var i = 0; i < transactionList.length; i++){
-                              if (transactionList[i] == widget.selectedTransaction){
-                                transactionList[i] = _newTransaction;
+                            //Replacing the Account & Account Transaction in accountList
+                            for (var i = 0; i < accountList.length; i++) {
+                              if (accountList[i].name == _selectedAccount.name) {
+                                for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
+                                  if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
+                                    accountList[i].balance+=widget.selectedTransaction.amount;
+                                    accountList[i].balance-=_newTransaction.amount;
+                                    accountList[i].accTransactionList[j] = _newTransaction;
+                                  }
+                                }
                               }
                             }
+                            setState(() {
+                              Account _chosenAccount = new Account();
+                              for (var i = 0; i < accountList.length; i++) {
+                                if (accountList[i].name == _selectedAccount.name) {
+                                  _chosenAccount = accountList[i];
+                                  _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
+                                  break;
+                                }
+                              }
 
-                            FirebaseFirestore.instance //Update chosen account balance in Firebase
-                              .collection('accounts')
-                              .doc(_chosenAccount.name)
-                              .update({
+                              //Replacing the Transaction in transactionList
+                              for (var i = 0; i < transactionList.length; i++){
+                                if (transactionList[i] == widget.selectedTransaction){
+                                  transactionList[i] = _newTransaction;
+                                }
+                              }
+
+                              FirebaseFirestore.instance //Update chosen account balance in Firebase
+                                  .collection('accounts')
+                                  .doc(_chosenAccount.name)
+                                  .update({
                                 'balance': _chosenAccount.balance,
                               }).catchError((onError){
                                 print("Error when updating Acc balance");
                               });
-                            FirebaseFirestore.instance
-                              .collection('accounts')
-                              .doc(_chosenAccount.name)
-                              .collection('transactions')
-                              .doc(_newTransaction.id)
-                              .update({
+                              FirebaseFirestore.instance
+                                  .collection('accounts')
+                                  .doc(_chosenAccount.name)
+                                  .collection('transactions')
+                                  .doc(_newTransaction.id)
+                                  .update({
                                 'amount': _newTransaction.amount,
                                 'date': _newTransaction.date.toString(),
                                 'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
@@ -151,55 +162,56 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                               }).catchError((onError){
                                 print("Error when updating transaction");
                               });
-                          });
+                            });
 
-                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
-                        },
+                            Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                          },
+                        ),
                       ),
-                    ),
-                    new Container(
-                      margin: new EdgeInsets.only(bottom: 5.0),
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: new RaisedButton(
-                        shape: RoundedRectangleBorder(
+                      new Container(
+                        margin: new EdgeInsets.only(bottom: 5.0),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: new RaisedButton(
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0.0),
                             side: BorderSide(color: Colors.white)),
-                        padding: EdgeInsets.all(10.0),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        child: new Text("Delete Transaction"),
-                        onPressed: (){
-                          //Replacing the Account & Account Transaction in accountList
-                          for (var i = 0; i < accountList.length; i++) {
-                            if (accountList[i].name == _selectedAccount.name) {
-                              for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
-                                if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                  //accountList[i].balance+=widget.selectedTransaction.amount;
-                                  accountList[i].accTransactionList.removeAt(j);
+                          padding: EdgeInsets.all(10.0),
+                          color: Colors.red,
+                          textColor: Colors.white,
+                          child: new Text("Delete Transaction"),
+                          onPressed: (){
+                            //Replacing the Account & Account Transaction in accountList
+                            for (var i = 0; i < accountList.length; i++) {
+                              if (accountList[i].name == _selectedAccount.name) {
+                                for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
+                                  if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
+                                    //accountList[i].balance+=widget.selectedTransaction.amount;
+                                    accountList[i].accTransactionList.removeAt(j);
+                                  }
                                 }
                               }
                             }
-                          }
-                          setState(() {
-                            //Replacing the Transaction in transactionList
-                            for (var i = 0; i < transactionList.length; i++){
-                              if (transactionList[i] == widget.selectedTransaction){
-                                transactionList.removeAt(i);
+                            setState(() {
+                              //Replacing the Transaction in transactionList
+                              for (var i = 0; i < transactionList.length; i++){
+                                if (transactionList[i] == widget.selectedTransaction){
+                                  transactionList.removeAt(i);
+                                }
                               }
-                            }
 
-                            FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transactions').doc(_newTransaction.id).delete();
-                          });
+                              FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transactions').doc(_newTransaction.id).delete();
+                            });
 
-                          Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
-                        },
+                            Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         )
     );
   }
@@ -248,7 +260,7 @@ class _AmtTextFieldState extends State<_AmtTextField>{
   }
 }
 
-//StatefulWidget for Dropdownbutton
+//StatefulWidget for DropdownButton
 class _DropdownButton extends StatefulWidget{
   //Declare a field to hold the selected category
   final Transaction selectedTransaction;
@@ -257,33 +269,27 @@ class _DropdownButton extends StatefulWidget{
   _DropdownButton({ Key key, this.selectedTransaction}): super(key: key);
 
   @override
-  _State createState() => new _State();
+  _DropdownButtonState createState() => new _DropdownButtonState();
 }
-class _State extends State<_DropdownButton>{
-  List<DropdownMenuItem<Account>> _dropdownMenuItems;
-
+class _DropdownButtonState extends State<_DropdownButton>{
+  @override
   void initState() {
-    _dropdownMenuItems = buildDropDownMenuItems(accountList);
     for (int i = 0; i < accountList.length; i++){
       for (int j = 0; j < accountList[i].accTransactionList.length; j++){
-        if (accountList[i].accTransactionList[j] == widget.selectedTransaction) {
-          for (int k = 0; k<_dropdownMenuItems.length; k++){
-            if (_dropdownMenuItems[k].value == accountList[i]){
-              _selectedAccount = _dropdownMenuItems[k].value;
-            }
-          }
+        if (accountList[i].accTransactionList[j].id == widget.selectedTransaction.id) {
+          _selectedAccount.name = accountList[i].name;
         }
       }
     }
   }
 
-  List<DropdownMenuItem<Account>> buildDropDownMenuItems(List listItems) {
-    List<DropdownMenuItem<Account>> items = List();
+  List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<String>> items = List();
     for (Account listItem in listItems) {
       items.add(
         new DropdownMenuItem(
-          child: new Text(listItem.name),
-          value: listItem,
+            child: new Text(listItem.name),
+            value: listItem.name
         ),
       );
     }
@@ -293,8 +299,8 @@ class _State extends State<_DropdownButton>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: new DropdownButton<Account>(
-        value: _selectedAccount,
+      child: new DropdownButton<String>(
+        value: _selectedAccount.name,
         icon: Icon(Icons.arrow_downward),
         iconSize: 24.0,
         elevation: 16,
@@ -303,10 +309,10 @@ class _State extends State<_DropdownButton>{
             height: 2,
             color: Colors.blue
         ),
-        items: _dropdownMenuItems,
+        items: buildDropDownMenuItems(List.from(accountList)),
         onChanged: (value){
           setState(() {
-            _selectedAccount.name = value.name;
+            _selectedAccount.name = value;
           });
         },
       ),
@@ -314,7 +320,7 @@ class _State extends State<_DropdownButton>{
   }
 }
 
-//StatefulWidget for Datepicker
+//StatefulWidget for DatePicker
 class _DatePicker extends StatefulWidget{
   //Declare a field to hold the selected category
   final Transaction selectedTransaction;
