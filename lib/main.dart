@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 //App logo shows
 //Remove local db
 //Do up adding of amount for salary
+//When editing existing account, change the category -> new transaction is made
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,7 +106,7 @@ class _MyAppState extends State<MyApp>{
     await Future.forEach(accData.docs, (accResult) async{
       Account _acc = new Account();
       _acc.name = accResult.id;
-      _acc.balance = accResult["balance"];
+      _acc.balance = accResult["balance"].toDouble();
       _acc.accountType = accResult["accountType"];
       var transData = await FirebaseFirestore.instance.collection('accounts').doc(accResult.id).collection("transactions").get();
       await Future.forEach(transData.docs, (transResult) async{

@@ -53,7 +53,7 @@ class _CreateAccountState extends State<CreateAccount>{
                             .collection('accounts')
                             .doc(_newAccount.name)
                             .set({
-                              'balance': _newAccount.name,
+                              'balance': _newAccount.balance,
                               'accountType': _newAccount.accountType
                             }).catchError((onError){
                               print("Error when adding new Account");

@@ -169,21 +169,18 @@ class _DropdownButton extends StatefulWidget{
   _State createState() => new _State();
 }
 class _State extends State<_DropdownButton>{
-  List<DropdownMenuItem<Account>> _dropdownMenuItems;
-
-  void initState() {
-    super.initState();
-    _dropdownMenuItems = buildDropDownMenuItems(accountList);
-    _selectedAccount = _dropdownMenuItems[0].value;
+  @override
+  void initState(){
+    _selectedAccount.name = accountList[0].name;
   }
 
-  List<DropdownMenuItem<Account>> buildDropDownMenuItems(List listItems) {
-    List<DropdownMenuItem<Account>> items = List();
+  List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<String>> items = List();
     for (Account listItem in listItems) {
       items.add(
         new DropdownMenuItem(
           child: new Text(listItem.name),
-          value: listItem
+          value: listItem.name
         ),
       );
     }
@@ -193,8 +190,8 @@ class _State extends State<_DropdownButton>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: new DropdownButton<Account>(
-        value: _selectedAccount,
+      child: new DropdownButton<String>(
+        value: _selectedAccount.name,
         icon: Icon(Icons.arrow_downward),
         iconSize: 24.0,
         elevation: 16,
@@ -203,10 +200,10 @@ class _State extends State<_DropdownButton>{
           height: 2,
           color: Colors.blue
         ),
-        items: _dropdownMenuItems,
+        items: buildDropDownMenuItems(List.from(accountList)),
         onChanged: (value){
           setState(() {
-            _selectedAccount.name = value.name;
+            _selectedAccount.name = value;
           });
         },
       ),
