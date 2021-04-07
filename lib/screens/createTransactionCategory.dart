@@ -3,10 +3,9 @@ import 'package:MWallet/screens/createTransactionRecord.dart';
 
 class CreateTransaction extends StatefulWidget{
   @override
-  _State createState() => new _State();
+  _CreateTransactionState createState() => new _CreateTransactionState();
 }
-
-class _State extends State<CreateTransaction>{
+class _CreateTransactionState extends State<CreateTransaction>{
 
   void selectedCategory(String c, IconData i){
     Navigator.push(

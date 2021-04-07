@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 Transaction _newTransaction;
 Account _selectedAccount;
+String categoryCat;
 
 class CreateTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
@@ -24,6 +25,11 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   void initState() {
     _newTransaction = new Transaction();
     _selectedAccount = new Account();
+    Transaction.categoryTypes.forEach((x){
+      if (x.name == widget.selectedCategory){
+        categoryCat = x.category;
+      }
+    });
   }
 
   @override
@@ -77,7 +83,11 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                         setState(() {
                           Account _chosenAccount = new Account();
                           for (var i = 0; i < accountList.length; i++) {
-                            if (accountList[i].name == _selectedAccount.name) {
+                            if (accountList[i].name == _selectedAccount.name && categoryCat == "Income") {
+                              _chosenAccount = accountList[i];
+                              _chosenAccount.balance += _newTransaction.amount; //Deduct transaction amount from chosen account
+                              break;
+                            } else if (accountList[i].name == _selectedAccount.name) {
                               _chosenAccount = accountList[i];
                               _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
                               break;
@@ -144,7 +154,10 @@ class _AmtTextFieldState extends State<_AmtTextField>{
       child: new Column(
         children:<Widget>[
           new TextField(
-            decoration: InputDecoration(
+            decoration: (categoryCat == "Income") ? new InputDecoration(
+              labelText: 'Amount',
+              prefixText: '+ \$',
+            ) : new InputDecoration(
               labelText: 'Amount',
               prefixText: '- \$',
             ),
