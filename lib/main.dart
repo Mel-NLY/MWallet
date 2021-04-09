@@ -14,7 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 //Create launch page (Add some animation)
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
-//App logo shows
+//App logo shows (DONE)
 //Remove local db (DONE)
 //Do up adding of amount for salary (DONE)
 //When editing existing account, change the category -> new transaction is made (DONE)
