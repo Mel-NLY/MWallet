@@ -12,7 +12,7 @@ import 'package:MWallet/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_core/firebase_core.dart';
 
-//Create launch page (Add some animation)
+//Create launch page (DONE)
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
 //App logo shows (DONE)
 //Remove local db (DONE)
