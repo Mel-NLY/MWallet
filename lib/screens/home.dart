@@ -25,7 +25,9 @@ class _HomeState extends State<Home>{
   double calculateBalance(){
     double _transactionBalance = 0;
     for(int i = 0; i < _currentMonthTransactionList.length; i++){
-      _transactionBalance += _currentMonthTransactionList.elementAt(i).amount;
+      if (_currentMonthTransactionList.elementAt(i).categoryType.category != "Transfer"){
+        _transactionBalance += _currentMonthTransactionList.elementAt(i).amount;
+      }
     }
     return _transactionBalance;
   }

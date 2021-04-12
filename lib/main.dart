@@ -13,9 +13,6 @@ import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_core/firebase_core.dart';
 
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
-//Account balance will decrease if transaction amount is edited, hence make acc balance stable (Done)
-//Dates should be latest first
-//Add bank transfer
 //Add regex
 
 void main() async{

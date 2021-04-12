@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 Transaction _newTransaction;
 Account _selectedAccount;
+Account _transferAccount;
 String categoryCat;
 
 class CreateTransactionRecord extends StatefulWidget{
@@ -25,6 +26,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   void initState() {
     _newTransaction = new Transaction();
     _selectedAccount = new Account();
+    _transferAccount = new Account();
     Transaction.categoryTypes.forEach((x){
       if (x.name == widget.selectedCategory){
         categoryCat = x.category;
@@ -67,6 +69,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                     ],
                   ),
                   _DropdownButton(),
+                  if (categoryCat == "Transfer") _TransferDropdownButton(),
                   _DatePicker(),
                   _TimePicker(),
                   _Notes(),
@@ -82,14 +85,25 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                       onPressed: (){
                         setState(() {
                           Account _chosenAccount = new Account();
+                          Account _toAccount = new Account();
                           for (var i = 0; i < accountList.length; i++) {
                             if (accountList[i].name == _selectedAccount.name && categoryCat == "Income") {
                               _chosenAccount = accountList[i];
                               _chosenAccount.balance += _newTransaction.amount; //Deduct transaction amount from chosen account
                               break;
-                            } else if (accountList[i].name == _selectedAccount.name) {
+                            } else if (accountList[i].name == _selectedAccount.name && categoryCat == "Expenses") {
                               _chosenAccount = accountList[i];
                               _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
+                              break;
+                            } else if (accountList[i].name == _selectedAccount.name && categoryCat == "Transfer"){
+                              _chosenAccount = accountList[i];
+                              for (var i = 0; i < accountList.length; i++) {
+                                if (accountList[i].name == _transferAccount.name){ //Need to check again for receiving acc
+                                  _toAccount = accountList[i];
+                                  _chosenAccount.balance -= _newTransaction.amount;
+                                  _toAccount.balance += _newTransaction.amount;
+                                }
+                              }
                               break;
                             }
                           }
@@ -194,23 +208,89 @@ class _DropdownButtonState extends State<_DropdownButton>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: new DropdownButton<String>(
-        value: _selectedAccount.name,
-        icon: Icon(Icons.arrow_downward),
-        iconSize: 24.0,
-        elevation: 16,
-        style: new TextStyle(color: Colors.blue),
-        underline: new Container(
-          height: 2,
-          color: Colors.blue
+      child: new Row(
+        children: [
+          new Text('From:     ',
+          style: new TextStyle(
+            fontSize: 16,
+            ),
+          ),
+          new DropdownButton<String>(
+            value: _selectedAccount.name,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24.0,
+            elevation: 16,
+            style: new TextStyle(color: Colors.blue),
+            underline: new Container(
+                height: 2,
+                color: Colors.blue
+            ),
+            items: buildDropDownMenuItems(List.from(accountList)),
+            onChanged: (value){
+              setState(() {
+                _selectedAccount.name = value;
+              });
+            },
+          ),
+        ],
+      )
+    );
+  }
+}
+
+//StatefulWidget for TransferDropdownButton
+class _TransferDropdownButton extends StatefulWidget{
+  @override
+  _TransferDropdownButtonState createState() => new _TransferDropdownButtonState();
+}
+class _TransferDropdownButtonState extends State<_TransferDropdownButton>{
+  @override
+  void initState(){
+    _transferAccount.name = accountList[0].name;
+  }
+
+  List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<String>> items = List();
+    for (Account listItem in listItems) {
+      items.add(
+        new DropdownMenuItem(
+            child: new Text(listItem.name),
+            value: listItem.name
         ),
-        items: buildDropDownMenuItems(List.from(accountList)),
-        onChanged: (value){
-          setState(() {
-            _selectedAccount.name = value;
-          });
-        },
-      ),
+      );
+    }
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: new Row(
+          children: [
+            new Text('To:           ',
+              style: new TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            new DropdownButton<String>(
+              value: _transferAccount.name,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24.0,
+              elevation: 16,
+              style: new TextStyle(color: Colors.blue),
+              underline: new Container(
+                  height: 2,
+                  color: Colors.blue
+              ),
+              items: buildDropDownMenuItems(List.from(accountList)),
+              onChanged: (value){
+                setState(() {
+                  _transferAccount.name = value;
+                });
+              },
+            ),
+          ],
+        )
     );
   }
 }
