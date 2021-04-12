@@ -12,12 +12,11 @@ import 'package:MWallet/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_core/firebase_core.dart';
 
-//Create launch page (DONE)
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
-//App logo shows (DONE)
-//Remove local db (DONE)
-//Do up adding of amount for salary (DONE)
-//When editing existing account, change the category -> new transaction is made (DONE)
+//Account balance will decrease if transaction amount is edited, hence make acc balance stable
+//Dates should be latest first
+//Add bank transfer
+//Add regex
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

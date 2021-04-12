@@ -48,16 +48,18 @@ class _CreateAccountState extends State<CreateAccount>{
                         textColor: Colors.black,
                         child: new Text("Add the account!"),
                         onPressed: (){
-                          accountList.add(_newAccount);
-                          FirebaseFirestore.instance
-                            .collection('accounts')
-                            .doc(_newAccount.name)
-                            .set({
+                          setState(() {
+                            accountList.add(_newAccount);
+                            FirebaseFirestore.instance
+                                .collection('accounts')
+                                .doc(_newAccount.name)
+                                .set({
                               'balance': _newAccount.balance,
                               'accountType': _newAccount.accountType
                             }).catchError((onError){
                               print("Error when adding new Account");
                             });
+                          });
                           Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
                         },
                       ),

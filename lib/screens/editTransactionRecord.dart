@@ -139,15 +139,6 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                                   transactionList[i] = _newTransaction;
                                 }
                               }
-
-                              FirebaseFirestore.instance //Update chosen account balance in Firebase
-                                  .collection('accounts')
-                                  .doc(_chosenAccount.name)
-                                  .update({
-                                'balance': _chosenAccount.balance,
-                              }).catchError((onError){
-                                print("Error when updating Acc balance");
-                              });
                               FirebaseFirestore.instance
                                   .collection('accounts')
                                   .doc(_chosenAccount.name)

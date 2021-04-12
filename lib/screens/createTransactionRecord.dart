@@ -99,14 +99,6 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                               break;
                             }
                           }
-                          FirebaseFirestore.instance //Update chosen account balance in Firebase
-                              .collection('accounts')
-                              .doc(_chosenAccount.name)
-                              .update({
-                                'balance': _chosenAccount.balance,
-                              }).catchError((onError){
-                                print("Error when updating Acc balance");
-                              });
                           FirebaseFirestore.instance
                               .collection('accounts')
                               .doc(_chosenAccount.name)
