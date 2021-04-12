@@ -32,7 +32,7 @@ class _HomeState extends State<Home>{
 
   @override
   void initState(){
-    transactionList.sort((a,b)=> a.date.millisecondsSinceEpoch.compareTo(b.date.millisecondsSinceEpoch));
+    transactionList.sort((a,b)=> b.date.millisecondsSinceEpoch.compareTo(a.date.millisecondsSinceEpoch));
     _currentMonthTransactionList = new List<Transaction>();
     for(int i = 0; i < transactionList.length; i++){
       if (DateFormat('MMMM yyyy').format(transactionList[i].date) == DateFormat('MMMM yyyy').format(DateTime.now())){
