@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 
 Transaction _newTransaction;
 Account _selectedAccount;
-Account _transferAccount;
-String categoryCat;
 
 class CreateTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
@@ -26,10 +24,9 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
   void initState() {
     _newTransaction = new Transaction();
     _selectedAccount = new Account();
-    _transferAccount = new Account();
     Transaction.categoryTypes.forEach((x){
       if (x.name == widget.selectedCategory){
-        categoryCat = x.category;
+        _newTransaction.categoryType.category = x.category;
       }
     });
   }
@@ -69,7 +66,7 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                     ],
                   ),
                   _DropdownButton(),
-                  if (categoryCat == "Transfer") _TransferDropdownButton(),
+                  if(_newTransaction.categoryType.category == "Transfer") _TransferDropdownButton(),
                   _DatePicker(),
                   _TimePicker(),
                   _Notes(),
@@ -85,35 +82,16 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                       onPressed: (){
                         setState(() {
                           Account _chosenAccount = new Account();
-                          Account _toAccount = new Account();
                           for (var i = 0; i < accountList.length; i++) {
-                            if (accountList[i].name == _selectedAccount.name && categoryCat == "Income") {
+                            if (accountList[i].name == _selectedAccount.name) {
                               _chosenAccount = accountList[i];
-                              _chosenAccount.balance += _newTransaction.amount; //Deduct transaction amount from chosen account
-                              break;
-                            } else if (accountList[i].name == _selectedAccount.name && categoryCat == "Expenses") {
-                              _chosenAccount = accountList[i];
-                              _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
-                              break;
-                            } else if (accountList[i].name == _selectedAccount.name && categoryCat == "Transfer"){
-                              _chosenAccount = accountList[i];
-                              for (var i = 0; i < accountList.length; i++) {
-                                if (accountList[i].name == _transferAccount.name){ //Need to check again for receiving acc
-                                  _toAccount = accountList[i];
-                                  _chosenAccount.balance -= _newTransaction.amount;
-                                  _toAccount.balance += _newTransaction.amount;
-                                }
-                              }
                               break;
                             }
                           }
-                          for (var i = 0; i < Transaction.categoryTypes.length; i++) {
-                            if (Transaction.categoryTypes[i].name == widget.selectedCategory) {
-                              _newTransaction.categoryType = Transaction.categoryTypes[i];
-                              break;
-                            }
-                          }
-                          widget.selectedCategory != "Transfer" ? FirebaseFirestore.instance
+
+                          _newTransaction.categoryType.name = widget.selectedCategory;
+
+                          _newTransaction.categoryType.category != "Transfer" ? FirebaseFirestore.instance
                             .collection('accounts')
                             .doc(_chosenAccount.name)
                             .collection('transactions')
@@ -137,14 +115,12 @@ class _CreateTransactionRecordState extends State<CreateTransactionRecord>{
                               'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
                               'note': _newTransaction.note,
                               'categoryType': _newTransaction.categoryType.name,
-                              'receivingAcc': _transferAccount.name
+                              'receivingAcc': _newTransaction.receivingAcc
                             }).then((value){
                               _newTransaction.id = value.id; //Get random generated document ID
                             }).catchError((onError){
                               print("Error when adding new transaction");
                             });
-                          _chosenAccount.accTransactionList.add(_newTransaction);
-                          transactionList.add(_newTransaction);
                           _chosenAccount.accTransactionList.add(_newTransaction);
                           transactionList.add(_newTransaction);
                         });
@@ -177,7 +153,7 @@ class _AmtTextFieldState extends State<_AmtTextField>{
       child: new Column(
         children:<Widget>[
           new TextField(
-            decoration: (categoryCat == "Income") ? new InputDecoration(
+            decoration: _newTransaction.categoryType.category == "Income" ? new InputDecoration(
               labelText: 'Amount',
               prefixText: '+ \$',
             ) : new InputDecoration(
@@ -263,7 +239,7 @@ class _TransferDropdownButton extends StatefulWidget{
 class _TransferDropdownButtonState extends State<_TransferDropdownButton>{
   @override
   void initState(){
-    _transferAccount.name = accountList[0].name;
+    _newTransaction.receivingAcc = accountList[0].name;
   }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
@@ -290,7 +266,7 @@ class _TransferDropdownButtonState extends State<_TransferDropdownButton>{
               ),
             ),
             new DropdownButton<String>(
-              value: _transferAccount.name,
+              value: _newTransaction.receivingAcc,
               icon: Icon(Icons.arrow_downward),
               iconSize: 24.0,
               elevation: 16,
@@ -302,7 +278,7 @@ class _TransferDropdownButtonState extends State<_TransferDropdownButton>{
               items: buildDropDownMenuItems(List.from(accountList)),
               onChanged: (value){
                 setState(() {
-                  _transferAccount.name = value;
+                  _newTransaction.receivingAcc = value;
                 });
               },
             ),

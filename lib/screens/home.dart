@@ -20,7 +20,6 @@ class Home extends StatefulWidget{
   @override
   _HomeState createState() => _HomeState();
 }
-
 class _HomeState extends State<Home>{
   double calculateBalance(){
     double _transactionBalance = 0;
@@ -150,25 +149,23 @@ class _HomeState extends State<Home>{
                             ),
                             new Container(
                               padding: new EdgeInsets.all(18),
-                              child: new Expanded(
-                                child: new Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    new Text(
-                                      '${_currentMonthTransactionList[index].categoryType.name}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  new Text(
+                                    '${_currentMonthTransactionList[index].categoryType.name}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    new Text(
-                                      '${_currentMonthTransactionList[index].note}',
-                                      style: TextStyle(
-                                        color: Colors.grey[600],
-                                      ),
+                                  ),
+                                  new Text(
+                                    '${_currentMonthTransactionList[index].note}',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             new Spacer(),

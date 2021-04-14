@@ -14,7 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
 //Add regex
-//Take note of transfers (Need to update on db and on account page)
+//Transfer function on edit cat and trans
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

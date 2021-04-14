@@ -4,11 +4,9 @@ import 'package:MWallet/codes/account.dart';
 import 'package:MWallet/codes/transaction.dart';
 import 'package:MWallet/screens/home.dart';
 import 'package:intl/intl.dart';
-
 import 'editTransactionCategory.dart';
 
 Account _selectedAccount;
-Transaction _newTransaction;
 
 class EditTransactionRecord extends StatefulWidget{
   //Declare a field to hold the selected category
@@ -19,12 +17,10 @@ class EditTransactionRecord extends StatefulWidget{
   @override
   _EditTransactionRecordState createState() => _EditTransactionRecordState();
 }
-
 class _EditTransactionRecordState extends State<EditTransactionRecord>{
   @override
   void initState() {
     _selectedAccount = new Account();
-    _newTransaction = widget.selectedTransaction;
   }
 
   @override
@@ -47,20 +43,20 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                           new Column(
                             children: <Widget>[
                               new Icon(
-                                _newTransaction.categoryType.name == "Transportation" ? Icons.commute :
-                                _newTransaction.categoryType.name == "Food" ? Icons.fastfood :
-                                _newTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
-                                _newTransaction.categoryType.name == "Bills" ? Icons.request_page :
-                                _newTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
-                                _newTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
-                                _newTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
-                                _newTransaction.categoryType.name == "Education" ? Icons.school :
-                                _newTransaction.categoryType.name == "Health" ? Icons.local_hospital :
-                                _newTransaction.categoryType.name == "Others" ? Icons.attach_money :
+                                  widget.selectedTransaction.categoryType.name == "Transportation" ? Icons.commute :
+                                  widget.selectedTransaction.categoryType.name == "Food" ? Icons.fastfood :
+                                  widget.selectedTransaction.categoryType.name == "Shopping" ? Icons.shopping_cart :
+                                  widget.selectedTransaction.categoryType.name == "Bills" ? Icons.request_page :
+                                  widget.selectedTransaction.categoryType.name == "Travel" ? Icons.airplanemode_active :
+                                  widget.selectedTransaction.categoryType.name == "Groceries" ? Icons.trending_up :
+                                  widget.selectedTransaction.categoryType.name == "Entertainment" ? Icons.music_video :
+                                  widget.selectedTransaction.categoryType.name == "Education" ? Icons.school :
+                                  widget.selectedTransaction.categoryType.name == "Health" ? Icons.local_hospital :
+                                  widget.selectedTransaction.categoryType.name == "Others" ? Icons.attach_money :
 
-                                _newTransaction.categoryType.name == "Salary" ? Icons.work :
-                                _newTransaction.categoryType.name == "Awards" ? Icons.military_tech :
-                                _newTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
+                                  widget.selectedTransaction.categoryType.name == "Salary" ? Icons.work :
+                                  widget.selectedTransaction.categoryType.name == "Awards" ? Icons.military_tech :
+                                  widget.selectedTransaction.categoryType.name == "Refunds" ? Icons.replay :  Icons.save_alt
                               ),
                               new FlatButton(
                                 child: new Text(
@@ -75,20 +71,21 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditTransactionCategory(selectedTransaction: _newTransaction),
+                                        builder: (context) => EditTransactionCategory(selectedTransaction: widget.selectedTransaction),
                                       )
                                   );
                                 },
                               ),
                             ],
                           ),
-                          _AmtTextField(selectedTransaction: _newTransaction)
+                          _AmtTextField(selectedTransaction: widget.selectedTransaction)
                         ],
                       ),
-                      _DropdownButton(selectedTransaction: _newTransaction),
-                      _DatePicker(selectedTransaction: _newTransaction),
-                      _TimePicker(selectedTransaction: _newTransaction),
-                      _Notes(selectedTransaction: _newTransaction),
+                      _DropdownButton(selectedTransaction: widget.selectedTransaction),
+                      if (widget.selectedTransaction.categoryType.category == "Transfer") _TransferDropdownButton(selectedTransaction: widget.selectedTransaction),
+                      _DatePicker(selectedTransaction: widget.selectedTransaction),
+                      _TimePicker(selectedTransaction: widget.selectedTransaction),
+                      _Notes(selectedTransaction: widget.selectedTransaction),
                       new SizedBox(
                         height: 20,
                       ),
@@ -104,55 +101,56 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                           textColor: Colors.black,
                           child: new Text("Save Changes"),
                           onPressed: (){
-                            //Finding the Category Type
-                            for (var i = 0; i < Transaction.categoryTypes.length; i++) {
-                              if (Transaction.categoryTypes[i].name == _newTransaction.categoryType.name) {
-                                _newTransaction.categoryType = Transaction.categoryTypes[i];
-                                break;
-                              }
-                            }
-                            //Replacing the Account & Account Transaction in accountList
-                            for (var i = 0; i < accountList.length; i++) {
-                              if (accountList[i].name == _selectedAccount.name) {
-                                for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
-                                  if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                    accountList[i].balance+=widget.selectedTransaction.amount;
-                                    accountList[i].balance-=_newTransaction.amount;
-                                    accountList[i].accTransactionList[j] = _newTransaction;
-                                  }
-                                }
-                              }
-                            }
                             setState(() {
                               Account _chosenAccount = new Account();
                               for (var i = 0; i < accountList.length; i++) {
                                 if (accountList[i].name == _selectedAccount.name) {
                                   _chosenAccount = accountList[i];
-                                  _chosenAccount.balance -= _newTransaction.amount; //Deduct transaction amount from chosen account
                                   break;
                                 }
                               }
 
-                              //Replacing the Transaction in transactionList
-                              for (var i = 0; i < transactionList.length; i++){
-                                if (transactionList[i] == widget.selectedTransaction){
-                                  transactionList[i] = _newTransaction;
+                              //Replacing the Account Transaction in accountList
+                              for (var i = 0; i < _chosenAccount.accTransactionList.length; i++) {
+                                if (_chosenAccount.accTransactionList[i].id == widget.selectedTransaction.id){
+                                  _chosenAccount.accTransactionList[i] = widget.selectedTransaction;
                                 }
                               }
-                              FirebaseFirestore.instance
+                              //Replacing the Transaction in transactionList
+                              for (var i = 0; i < transactionList.length; i++){
+                                if (transactionList[i].id == widget.selectedTransaction.id){
+                                  transactionList[i] = widget.selectedTransaction;
+                                }
+                              }
+
+                              widget.selectedTransaction.categoryType.category != "Transfer" ? FirebaseFirestore.instance
+                                .collection('accounts')
+                                .doc(_chosenAccount.name)
+                                .collection('transactions')
+                                .doc(widget.selectedTransaction.id)
+                                .update({
+                                  'amount': widget.selectedTransaction.amount,
+                                  'date': widget.selectedTransaction.date.toString(),
+                                  'time': widget.selectedTransaction.time.hour.toString()+":"+widget.selectedTransaction.time.minute.toString(),
+                                  'note': widget.selectedTransaction.note,
+                                  'categoryType': widget.selectedTransaction.categoryType.name
+                                }).catchError((onError){
+                                    print("Error when updating transaction");
+                                }) : FirebaseFirestore.instance
                                   .collection('accounts')
                                   .doc(_chosenAccount.name)
                                   .collection('transactions')
-                                  .doc(_newTransaction.id)
+                                  .doc(widget.selectedTransaction.id)
                                   .update({
-                                    'amount': _newTransaction.amount,
-                                    'date': _newTransaction.date.toString(),
-                                    'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
-                                    'note': _newTransaction.note,
-                                    'categoryType': _newTransaction.categoryType.name
+                                    'amount': widget.selectedTransaction.amount,
+                                    'date': widget.selectedTransaction.date.toString(),
+                                    'time': widget.selectedTransaction.time.hour.toString()+":"+widget.selectedTransaction.time.minute.toString(),
+                                    'note': widget.selectedTransaction.note,
+                                    'categoryType': widget.selectedTransaction.categoryType.name,
+                                    'receivingAcc': widget.selectedTransaction.receivingAcc
                                   }).catchError((onError){
-                                print("Error when updating transaction");
-                              });
+                                    print("Error when updating transaction");
+                                });
                             });
 
                             Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
@@ -171,26 +169,25 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                           textColor: Colors.white,
                           child: new Text("Delete Transaction"),
                           onPressed: (){
-                            //Replacing the Account & Account Transaction in accountList
-                            for (var i = 0; i < accountList.length; i++) {
-                              if (accountList[i].name == _selectedAccount.name) {
-                                for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
-                                  if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                    accountList[i].balance+=widget.selectedTransaction.amount;
-                                    accountList[i].accTransactionList.removeAt(j);
+                            setState(() {
+                              //Replacing the Account & Account Transaction in accountList
+                              for (var i = 0; i < accountList.length; i++) {
+                                if (accountList[i].name == _selectedAccount.name) {
+                                  for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
+                                    if (accountList[i].accTransactionList[j].id == widget.selectedTransaction.id){
+                                      accountList[i].accTransactionList.removeAt(j);
+                                    }
                                   }
                                 }
                               }
-                            }
-                            setState(() {
                               //Replacing the Transaction in transactionList
                               for (var i = 0; i < transactionList.length; i++){
-                                if (transactionList[i] == widget.selectedTransaction){
+                                if (transactionList[i].id == widget.selectedTransaction.id){
                                   transactionList.removeAt(i);
                                 }
                               }
 
-                              FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transactions').doc(_newTransaction.id).delete();
+                              FirebaseFirestore.instance.collection('accounts').doc(_selectedAccount.name).collection('transactions').doc(widget.selectedTransaction.id).delete();
                             });
 
                             Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
@@ -233,7 +230,10 @@ class _AmtTextFieldState extends State<_AmtTextField>{
       child: new Column(
         children:<Widget>[
           new TextField(
-            decoration: InputDecoration(
+            decoration: widget.selectedTransaction.categoryType.category == "Income" ? new InputDecoration(
+              labelText: 'Amount',
+              prefixText: '+ \$',
+            ) : new InputDecoration(
               labelText: 'Amount',
               prefixText: '- \$',
             ),
@@ -290,23 +290,96 @@ class _DropdownButtonState extends State<_DropdownButton>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: new DropdownButton<String>(
-        value: _selectedAccount.name,
-        icon: Icon(Icons.arrow_downward),
-        iconSize: 24.0,
-        elevation: 16,
-        style: new TextStyle(color: Colors.blue),
-        underline: new Container(
-            height: 2,
-            color: Colors.blue
+      child: new Row(
+        children: [
+          new Text('From:     ',
+          style: new TextStyle(
+            fontSize: 16,
+          ),
         ),
-        items: buildDropDownMenuItems(List.from(accountList)),
-        onChanged: (value){
-          setState(() {
-            _selectedAccount.name = value;
-          });
-        },
-      ),
+        new DropdownButton<String>(
+          value: _selectedAccount.name,
+          icon: Icon(Icons.arrow_downward),
+          iconSize: 24.0,
+          elevation: 16,
+          style: new TextStyle(color: Colors.blue),
+          underline: new Container(
+              height: 2,
+              color: Colors.blue
+          ),
+          items: buildDropDownMenuItems(List.from(accountList)),
+          onChanged: (value){
+            setState(() {
+              _selectedAccount.name = value;
+            });
+          },
+        ),
+      ]),
+    );
+  }
+}
+
+//StatefulWidget for TransferDropdownButton
+class _TransferDropdownButton extends StatefulWidget{
+  //Declare a field to hold the selected category
+  final Transaction selectedTransaction;
+
+  //In the constructor we require a String
+  _TransferDropdownButton({ Key key, this.selectedTransaction}): super(key: key);
+
+  @override
+  _TransferDropdownButtonState createState() => new _TransferDropdownButtonState();
+}
+class _TransferDropdownButtonState extends State<_TransferDropdownButton>{
+  @override
+  void initState(){
+    if (widget.selectedTransaction.receivingAcc == "") {
+      widget.selectedTransaction.receivingAcc = accountList[0].name;
+    }
+  }
+
+  List<DropdownMenuItem<String>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<String>> items = List();
+    for (Account listItem in listItems) {
+      items.add(
+        new DropdownMenuItem(
+            child: new Text(listItem.name),
+            value: listItem.name
+        ),
+      );
+    }
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: new Row(
+          children: [
+            new Text('To:           ',
+              style: new TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            new DropdownButton<String>(
+              value: widget.selectedTransaction.receivingAcc,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24.0,
+              elevation: 16,
+              style: new TextStyle(color: Colors.blue),
+              underline: new Container(
+                  height: 2,
+                  color: Colors.blue
+              ),
+              items: buildDropDownMenuItems(List.from(accountList)),
+              onChanged: (value){
+                setState(() {
+                  widget.selectedTransaction.receivingAcc = value;
+                });
+              },
+            ),
+          ],
+        )
     );
   }
 }

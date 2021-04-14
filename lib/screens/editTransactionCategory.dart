@@ -11,14 +11,19 @@ class EditTransactionCategory extends StatefulWidget{
   @override
   _EditTransactionCategoryState createState() => new _EditTransactionCategoryState();
 }
-
 class _EditTransactionCategoryState extends State<EditTransactionCategory>{
   void selectedCategory(String c){
     widget.selectedTransaction.categoryType.name = c;
+    for (int i = 0; i < Transaction.categoryTypes.length; i++){
+      if (Transaction.categoryTypes[i].name == widget.selectedTransaction.categoryType.name){
+        widget.selectedTransaction.categoryType.category = Transaction.categoryTypes[i].category;
+        break;
+      }
+    }
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EditTransactionRecord(selectedTransaction: widget.selectedTransaction,),
+          builder: (context) => EditTransactionRecord(selectedTransaction: widget.selectedTransaction),
         )
     );
   }

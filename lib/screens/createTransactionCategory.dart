@@ -6,7 +6,6 @@ class CreateTransaction extends StatefulWidget{
   _CreateTransactionState createState() => new _CreateTransactionState();
 }
 class _CreateTransactionState extends State<CreateTransaction>{
-
   void selectedCategory(String c, IconData i){
     Navigator.push(
         context,

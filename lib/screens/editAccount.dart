@@ -25,7 +25,7 @@ class _EditAccountState extends State<EditAccount>{
   Widget build(BuildContext context){
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Create Account"),
+        title: new Text("Edit Account"),
         backgroundColor: Theme.of(context).backgroundColor,
       ),
       body: new SingleChildScrollView(
