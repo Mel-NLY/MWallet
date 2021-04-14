@@ -19,6 +19,13 @@ class Accounts extends StatelessWidget{
     for (int j = 0; j < a.accTransactionList.length; j++){
       _accountBalance += a.accTransactionList[j].amount;
     }
+    for(int i = 0; i < accountList.length; i++){
+      for (int j = 0; j < accountList[i].accTransactionList.length; j++){
+        if (accountList[i].accTransactionList[j].receivingAcc == a.name){
+          _accountBalance -= accountList[i].accTransactionList[j].amount;
+        }
+      }
+    }
     return a.balance-_accountBalance;
   }
 

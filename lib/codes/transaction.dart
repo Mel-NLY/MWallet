@@ -6,6 +6,7 @@ class Transaction{
   DateTime date = new DateTime.now();
   TimeOfDay time = new TimeOfDay.now();
   String note = "";
+  String receivingAcc = "";
   static List<Category> categoryTypes = <Category>[
     new Category("Transportation", "Expenses"),
     new Category("Food", "Expenses"),

@@ -14,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
 //Add regex
+//Take note of transfers (Need to update on db and on account page)
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -113,6 +114,9 @@ class _MyAppState extends State<MyApp>{
         _trans.time = TimeOfDay(hour:int.parse(_hm[0]), minute: int.parse(_hm[1]));
         _trans.note = transResult["note"];
         _trans.categoryType = Transaction.categoryTypes.firstWhere((x) => x.name == transResult["categoryType"]);
+        if (_trans.categoryType.category == "Transfer"){
+          _trans.receivingAcc = transResult["receivingAcc"];
+        }
         transactionList.add(_trans);
         _acc.accTransactionList.add(_trans);
       });
