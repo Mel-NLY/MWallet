@@ -1,14 +1,25 @@
 import 'package:MWallet/screens/editAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/screens/home.dart';
+import 'package:MWallet/codes/account.dart';
 
 class Accounts extends StatelessWidget{
+  //Calculate total of all accounts
   double _calculateBalance(){
     double _accountBalance = 0;
     for(int i = 0; i < accountList.length; i++){
-      _accountBalance += accountList.elementAt(i).balance;
+      _accountBalance += _calculateAccBalance(accountList[i]);
     }
     return _accountBalance;
+  }
+
+  //Calculate account amount in each account
+  double _calculateAccBalance(Account a){
+    double _accountBalance = 0;
+    for (int j = 0; j < a.accTransactionList.length; j++){
+      _accountBalance += a.accTransactionList[j].amount;
+    }
+    return a.balance-_accountBalance;
   }
 
   @override
@@ -87,7 +98,7 @@ class Accounts extends StatelessWidget{
                                     height: 25
                                 ),
                                 new Text(
-                                  '${accountList[index].balance.toStringAsFixed(2)} SGD',
+                                  '${_calculateAccBalance(accountList[index]).toStringAsFixed(2)} SGD',
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
