@@ -55,6 +55,9 @@ class Accounts extends StatelessWidget{
               new Text('  Total'.toUpperCase(), style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 12)),
               new SizedBox(height: 5),
               new Text(' \$${_calculateBalance().toStringAsFixed(2)}', style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+              new SizedBox(
+                  height: 5
+              ),
               !isEmpty(accountList) ? new Expanded(
                   child: new GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: (_itemWidth / _itemHeight),),
