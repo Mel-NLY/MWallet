@@ -84,7 +84,7 @@ class Accounts extends StatelessWidget{
                                   ),
                                 ),
                                 new SizedBox(
-                                    height: 20
+                                    height: 25
                                 ),
                                 new Text(
                                   '${accountList[index].balance.toStringAsFixed(2)} SGD',

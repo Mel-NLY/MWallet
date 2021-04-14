@@ -61,7 +61,7 @@ class _EditAccountState extends State<EditAccount>{
                                 .collection('accounts')
                                 .doc(_newAccount.name)
                                 .update({
-                                  'balance': _newAccount.name,
+                                  'balance': _newAccount.balance,
                                   'accountType': _newAccount.accountType
                                 }).catchError((onError){
                                   print("Error when adding new Account");

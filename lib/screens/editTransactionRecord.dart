@@ -145,12 +145,12 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                                   .collection('transactions')
                                   .doc(_newTransaction.id)
                                   .update({
-                                'amount': _newTransaction.amount,
-                                'date': _newTransaction.date.toString(),
-                                'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
-                                'note': _newTransaction.note,
-                                'categoryType': _newTransaction.categoryType.name
-                              }).catchError((onError){
+                                    'amount': _newTransaction.amount,
+                                    'date': _newTransaction.date.toString(),
+                                    'time': _newTransaction.time.hour.toString()+":"+_newTransaction.time.minute.toString(),
+                                    'note': _newTransaction.note,
+                                    'categoryType': _newTransaction.categoryType.name
+                                  }).catchError((onError){
                                 print("Error when updating transaction");
                               });
                             });
@@ -176,7 +176,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
                               if (accountList[i].name == _selectedAccount.name) {
                                 for (var j = 0; j < accountList[i].accTransactionList.length; j++) {
                                   if (accountList[i].accTransactionList[j] == widget.selectedTransaction){
-                                    //accountList[i].balance+=widget.selectedTransaction.amount;
+                                    accountList[i].balance+=widget.selectedTransaction.amount;
                                     accountList[i].accTransactionList.removeAt(j);
                                   }
                                 }

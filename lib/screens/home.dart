@@ -34,7 +34,13 @@ class _HomeState extends State<Home>{
 
   @override
   void initState(){
-    transactionList.sort((a,b)=> b.date.millisecondsSinceEpoch.compareTo(a.date.millisecondsSinceEpoch));
+    transactionList.sort((a,b){
+      DateTime x;
+      DateTime y;
+      x = DateTime(a.date.year, a.date.month, a.date.day, a.time.hour, a.time.minute);
+      y = DateTime(b.date.year, b.date.month, b.date.day, b.time.hour, b.time.minute);
+      return y.compareTo(x);
+    });
     _currentMonthTransactionList = new List<Transaction>();
     for(int i = 0; i < transactionList.length; i++){
       if (DateFormat('MMMM yyyy').format(transactionList[i].date) == DateFormat('MMMM yyyy').format(DateTime.now())){
@@ -142,25 +148,27 @@ class _HomeState extends State<Home>{
                                 ),
                               ),
                             ),
-                            new Container(
-                              padding: new EdgeInsets.all(18),
-                              child: new Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    '${_currentMonthTransactionList[index].categoryType.name}',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
+                            new Expanded(
+                              child: new Container(
+                                padding: new EdgeInsets.all(18),
+                                child: new Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    new Text(
+                                      '${_currentMonthTransactionList[index].categoryType.name}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  new Text(
-                                    '${_currentMonthTransactionList[index].note}',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
+                                    new Text(
+                                      '${_currentMonthTransactionList[index].note}',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             new Spacer(),
