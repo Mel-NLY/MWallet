@@ -18,10 +18,11 @@ class Transaction{
     new Category("Education", "Expenses"),
     new Category("Health", "Expenses"),
     new Category("Others", "Expenses"),
+    new Category("Transfers", "Transfer"),
+    new Category("Transfers", "Transfer"),
     new Category("Salary", "Income"),
     new Category("Awards", "Income"),
-    new Category("Refunds", "Income"),
-    new Category("Transfers", "Transfer"),
+    new Category("Refunds", "Income")
   ];
 
   Category categoryType = categoryTypes.elementAt(0);
@@ -31,5 +32,8 @@ class Category{
   String name = "";
   String category = "";
 
-  Category(this.name, this.category);
+  Category(String name, String category){
+    this.name = name;
+    this.category = category;
+  }
 }

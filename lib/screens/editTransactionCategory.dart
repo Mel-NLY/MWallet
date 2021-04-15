@@ -14,10 +14,15 @@ class EditTransactionCategory extends StatefulWidget{
 class _EditTransactionCategoryState extends State<EditTransactionCategory>{
   void selectedCategory(String c){
     widget.selectedTransaction.categoryType.name = c;
+
+    var data = Transaction.categoryTypes.where((row) => row.name == widget.selectedTransaction.categoryType.name);
+    data.forEach((x) {
+      print(x.category);
+    });
+
     for (int i = 0; i < Transaction.categoryTypes.length; i++){
       if (Transaction.categoryTypes[i].name == widget.selectedTransaction.categoryType.name){
         widget.selectedTransaction.categoryType.category = Transaction.categoryTypes[i].category;
-        break;
       }
     }
     Navigator.push(

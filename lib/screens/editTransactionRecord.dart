@@ -27,7 +27,7 @@ class _EditTransactionRecordState extends State<EditTransactionRecord>{
   Widget build(BuildContext context){
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('Edit Transaction'),
+          title: new Text(widget.selectedTransaction.categoryType.category),
         ),
         body: new WillPopScope(
           onWillPop: null,
