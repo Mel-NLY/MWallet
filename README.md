@@ -15,20 +15,7 @@ Help track daily expenses, and the balance in each added account.
 - Firebase DB
 
 ## Screenshots
-<table>
-  <tr>
-    <td>MWallet Logo</td>
-     <td>Homepage</td>
-     <td>Accounts</td>
-  </tr>
-  <tr>
-    <td><img src="D:/Flutter/Projects/MWallet/images/logo.png"></td>
-    <td><img src="D:/Flutter/Projects/MWallet/images/1.jpg" width=270 height=480></td>
-    <td><img src="D:/Flutter/Projects/MWallet/images/2.jpg" width=270 height=480></td>
-  </tr>
- </table>
-
-You can check out more screenshots in the /images folder! :smile:
+You can check out the screenshots in the /images folder! :smile:
 
 ## Future Work
 - Error handling
