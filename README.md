@@ -1,16 +1,46 @@
 # MWallet
 
-A new Flutter project.
+A simple mobile application created using Flutter and Dart. 
+Developed this project to further familiarise myself with mobile development.
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+Help track daily expenses, and the balance in each added account.
 
-A few resources to get you started if this is your first Flutter project:
+###Features
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- CRUD Accounts
+- CRUD Transactions
+- Current Month Transactions
+- Previous Month Transactions
+- Firebase DB
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##Screenshots
+<table>
+  <tr>
+    <td>MWallet Logo</td>
+     <td>Homepage</td>
+     <td>Accounts</td>
+  </tr>
+  <tr>
+    <td><img src="D:/Flutter/Projects/MWallet/images/logo.png"></td>
+    <td><img src="D:/Flutter/Projects/MWallet/images/1.jpg" width=270 height=480></td>
+    <td><img src="D:/Flutter/Projects/MWallet/images/2.jpg" width=270 height=480></td>
+  </tr>
+ </table>
+
+You can check out more screenshots in the /images folder! :smile:
+
+##Future Work
+
+- Error handling
+- Insights
+
+##Feedback
+Always open to constructive feedback, feel free to drop me a message at [mnly0814@gmail.com](mailto:mnly0814@gmail.com).
+
+You can also check out:
+
+- [Github Projects](https://github.com/Mel-NLY)
+- [LinkedIn](https://www.linkedin.com/in/mnly/)
+- [Online Portfolio](https://www.mnly.ga/)

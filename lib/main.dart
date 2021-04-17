@@ -13,8 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:firebase_core/firebase_core.dart';
 
 //Error Handling https://medium.com/flutter-community/error-handling-in-flutter-98fce88a34f0
-//Add regex
-//Transfer function on edit cat and trans
+//Add field validation
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MWallet/codes/account.dart';
 import 'package:MWallet/screens/home.dart';
+import 'package:flutter/services.dart';
 
 Account _newAccount;
 
@@ -86,6 +87,9 @@ class _AccountNameFieldState extends State<_AccountNameField>{
     return new TextField(
       controller: _accountNameController,
       decoration: new InputDecoration(labelText: "Enter Account Name...", icon: Icon(Icons.edit)),
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'^.{1,25}$')),
+      ],
       onChanged: (String name){
         setState(() {
           _newAccount.name = name;
@@ -105,7 +109,10 @@ class _AccountBalanceFieldState extends State<_AccountBalanceField>{
   @override
   Widget build(BuildContext context) {
     return new TextField(
-      decoration: new InputDecoration(labelText: "Account Balance", icon: Icon(Icons.account_balance)),
+      decoration: new InputDecoration(
+        labelText: "Account Balance",
+        icon: Icon(Icons.account_balance)
+      ),
       keyboardType: TextInputType.number,
       controller: _accountBalanceController,
       onChanged: (String bal){
@@ -114,6 +121,19 @@ class _AccountBalanceFieldState extends State<_AccountBalanceField>{
         });
       },
     );
+  }
+
+  String validateBalance(String value) {
+    if (double.tryParse(value)==null && value!=""){
+      return "Balance should be numerical";
+    }
+    else if (value.isNotEmpty) {
+      return "Balance should not be empty";
+    }
+    else if (value.length > 9) {
+      return "Balance should not be more than 99999.99";
+    }
+    return null;
   }
 }
 
