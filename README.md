@@ -7,15 +7,14 @@ Developed this project to further familiarise myself with mobile development.
 
 Help track daily expenses, and the balance in each added account.
 
-###Features
-
+### Features
 - CRUD Accounts
 - CRUD Transactions
 - Current Month Transactions
 - Previous Month Transactions
 - Firebase DB
 
-##Screenshots
+## Screenshots
 <table>
   <tr>
     <td>MWallet Logo</td>
@@ -31,12 +30,11 @@ Help track daily expenses, and the balance in each added account.
 
 You can check out more screenshots in the /images folder! :smile:
 
-##Future Work
-
+## Future Work
 - Error handling
 - Insights
 
-##Feedback
+## Feedback
 Always open to constructive feedback, feel free to drop me a message at [mnly0814@gmail.com](mailto:mnly0814@gmail.com).
 
 You can also check out:
